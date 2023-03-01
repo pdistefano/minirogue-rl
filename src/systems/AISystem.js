@@ -20,7 +20,7 @@ const moveToTarget = (entity, target) => {
   }
 };
 
-export const ai = (player) => {
+export const AISystem = (player) => {
   aiEntities.get().forEach((entity) => {
     if (entity.has("IsInFov")) {
       moveToTarget(entity, player);

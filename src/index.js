@@ -11,13 +11,13 @@ import {
   serializeCache,
 } from "./state/cache";
 import { createDungeon } from "./lib/dungeon";
-import { ai } from "./systems/ai";
-import { animation } from "./systems/animation";
-import { effects } from "./systems/effects";
-import { fov } from "./systems/fov";
-import { movement } from "./systems/movement";
-import { render } from "./systems/render";
-import { targeting } from "./systems/targeting";
+import { AISystem } from "./systems/AISystem";
+import { AnimationSystem } from "./systems/AnimationSystem";
+import { EffectsSystem } from "./systems/EffectsSystem";
+import { FOVSystem } from "./systems/FOVSystem";
+import { MovementSystem } from "./systems/MovementSystem";
+import { RenderSystem } from "./systems/RenderSystem";
+import { TargetingSystem } from "./systems/TargetingSystem";
 import ecs from "./state/ecs";
 import { IsInFov, Move, Position, Ai } from "./state/components";
 
@@ -173,8 +173,8 @@ const goToDungeonLevel = (level) => {
     }
   }
 
-  fov(player);
-  render(player);
+  FOVSystem(player);
+  RenderSystem(player);
 };
 
 const initGame = () => {
@@ -188,8 +188,8 @@ const initGame = () => {
 
   player.add(Position, stairsDown.position);
 
-  fov(player);
-  render(player);
+  FOVSystem(player);
+  RenderSystem(player);
 };
 
 let player = {};
@@ -359,12 +359,12 @@ const processUserInput = () => {
 };
 
 const update = () => {
-  animation();
+  AnimationSystem();
 
   if (player.isDead) {
     if (gameState !== "GAMEOVER") {
       addLog("You are dead.");
-      render(player);
+      RenderSystem(player);
     }
     gameState = "GAMEOVER";
     processUserInput();
@@ -373,24 +373,24 @@ const update = () => {
 
   if (playerTurn && userInput && gameState === "TARGETING") {
     processUserInput();
-    render(player);
+    RenderSystem(player);
     playerTurn = true;
   }
 
   if (playerTurn && userInput && gameState === "INVENTORY") {
     processUserInput();
-    targeting();
-    effects();
-    render(player);
+    TargetingSystem();
+    EffectsSystem();
+    RenderSystem(player);
     playerTurn = true;
   }
 
   if (playerTurn && userInput && gameState === "GAME") {
     processUserInput();
-    effects();
-    movement();
-    fov(player);
-    render(player);
+    EffectsSystem();
+    MovementSystem();
+    FOVSystem(player);
+    RenderSystem(player);
 
     if (gameState === "GAME") {
       playerTurn = false;
@@ -398,11 +398,11 @@ const update = () => {
   }
 
   if (!playerTurn) {
-    ai(player);
-    effects();
-    movement();
-    fov(player);
-    render(player);
+    AISystem(player);
+    EffectsSystem();
+    MovementSystem();
+    FOVSystem(player);
+    RenderSystem(player);
 
     playerTurn = true;
   }
@@ -448,9 +448,9 @@ canvas.onclick = (e) => {
       }
 
       gameState = "GAME";
-      targeting();
-      effects();
-      render(player);
+      TargetingSystem();
+      EffectsSystem();
+      RenderSystem(player);
     }
   });
 };

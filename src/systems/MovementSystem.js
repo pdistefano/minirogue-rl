@@ -23,7 +23,7 @@ const attack = (entity, target) => {
   );
 };
 
-export const movement = () => {
+export const MovementSystem = () => {
   movableEntities.get().forEach((entity) => {
     if (entity.has("Paralyzed")) {
       return entity.remove(Move);

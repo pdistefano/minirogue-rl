@@ -5,7 +5,7 @@ const activeEffectsEntities = ecs.createQuery({
   all: [ActiveEffects],
 });
 
-export const effects = () => {
+export const EffectsSystem = () => {
   activeEffectsEntities.get().forEach((entity) => {
     entity.activeEffects.forEach((c) => {
       if (entity[c.component]) {

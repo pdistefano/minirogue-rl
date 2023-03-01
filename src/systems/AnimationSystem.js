@@ -19,7 +19,7 @@ const hexToRgb = (hex) => {
     : {};
 };
 
-export const animation = () => {
+export const AnimationSystem = () => {
   if (gameState !== "GAME") {
     return;
   }

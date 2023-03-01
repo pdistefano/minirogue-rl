@@ -13,7 +13,7 @@ const opaqueEntities = ecs.createQuery({
   all: [IsOpaque],
 });
 
-export const fov = (origin) => {
+export const FOVSystem = (origin) => {
   const { width, height } = grid;
 
   const originX = origin.position.x;

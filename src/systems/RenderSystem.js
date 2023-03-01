@@ -84,21 +84,12 @@ const clearPlayerHud = () => {
 
 const renderPlayerHud = (player) => {
   clearPlayerHud();
-
-  drawText({
-    text: `${player.appearance.char} ${player.description.name}`,
-    background: `${player.appearance.background}`,
-    color: `${player.appearance.color}`,
-    x: grid.playerHud.x,
-    y: grid.playerHud.y,
-  });
-
   drawText({
     text: "♥".repeat(grid.playerHud.width),
     background: "black",
     color: "#333",
     x: grid.playerHud.x,
-    y: grid.playerHud.y + 1,
+    y: grid.playerHud.y,
   });
 
   const hp = player.health.current / player.health.max;
@@ -109,7 +100,7 @@ const renderPlayerHud = (player) => {
       background: "black",
       color: "red",
       x: grid.playerHud.x,
-      y: grid.playerHud.y + 1,
+      y: grid.playerHud.y,
     });
   }
 
@@ -292,23 +283,23 @@ const renderInventory = (player) => {
 
 const renderMenu = () => {
   drawText({
-    text: `(i)Inventory (g)Pickup (arrow keys)Move/Attack (mouse)Look/Target (<)Stairs Up (>)Stairs Down`,
+    text: `(I)nventory (g)Pickup (arrow keys)Move/Attack (<)Stairs Up (>)Stairs Down`,
     background: "#000",
-    color: "#666",
+    color: "#66f",
     x: grid.menu.x,
     y: grid.menu.y,
   });
 
   drawText({
-    text: `(n)New (s)Save (l)Load`,
+    text: `(N)ew (S)ave (L)oad`,
     background: "#000",
-    color: "#666",
+    color: "#66f",
     x: grid.menu.x,
     y: grid.menu.y + 1,
   });
 };
 
-export const render = (player) => {
+export const RenderSystem = (player) => {
   renderMap();
   renderPlayerHud(player);
   renderMessageLog();

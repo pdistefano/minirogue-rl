@@ -8,7 +8,7 @@ const targetingEntities = ecs.createQuery({
   all: [Target, TargetingItem],
 });
 
-export const targeting = () => {
+export const TargetingSystem = () => {
   targetingEntities.get().forEach((entity) => {
     const { item } = entity.targetingItem;
 

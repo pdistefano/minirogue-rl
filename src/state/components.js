@@ -2,149 +2,143 @@ import { remove } from "lodash";
 import { Component } from "geotic";
 import { addCacheSet, deleteCacheSet } from "./cache";
 
+export class IsBlocking extends Component { }
+export class IsDead extends Component { }
+export class IsInFov extends Component { }
+export class IsOpaque extends Component { }
+export class IsPickup extends Component { }
+export class IsRevealed extends Component { }
+export class Layer100 extends Component { }
+export class Layer300 extends Component { }
+export class Layer400 extends Component { }
+
 const effectProps = {
-  component: "",
-  delta: "",
-  animate: { char: "", color: "" },
-  events: [], // { name: "", args: {} },
-  addComponents: [], // { name: '', properties: {} }
-  duration: 0, // in turns
+	component: "",
+	delta: "",
+	animate: { char: "", color: "" },
+	events: [], // { name: "", args: {} },
+	addComponents: [], // { name: '', properties: {} }
+	duration: 0, // in turns
 };
 
 export class ActiveEffects extends Component {
-  static allowMultiple = true;
-  static properties = effectProps;
+	static allowMultiple = true;
+	static properties = effectProps;
 }
 
-export class Ai extends Component {}
+export class Ai extends Component { }
 
 export class Animate extends Component {
-  static allowMultiple = true;
-  static properties = {
-    startTime: null,
-    duration: 250,
-    char: "",
-    color: "",
-  };
+	static allowMultiple = true;
+	static properties = {
+		startTime: null,
+		duration: 2500,
+		char: "",
+		color: "",
+	};
 
-  onSetStartTime(evt) {
-    this.startTime = evt.data.time;
-  }
+	onSetStartTime(evt) {
+		this.startTime = evt.data.time;
+	}
 }
 
 export class Appearance extends Component {
-  static properties = {
-    color: "#ff0077",
-    char: "?",
-    background: "#000",
-  };
+	static properties = {
+		color: "#ff0077",
+		char: "?",
+		background: "#000",
+	};
 }
 
 export class Defense extends Component {
-  static properties = { max: 1, current: 1 };
+	static properties = { max: 1, current: 1 };
 }
 
 export class Description extends Component {
-  static properties = { name: "No Name" };
+	static properties = { name: "No Name" };
 }
 
 export class Effects extends Component {
-  static allowMultiple = true;
-  static properties = effectProps;
+	static allowMultiple = true;
+	static properties = effectProps;
 }
 
 export class Health extends Component {
-  static properties = { max: 10, current: 10 };
+	static properties = { max: 10, current: 10 };
 
-  onTakeDamage(evt) {
-    this.current -= evt.data.amount;
+	onTakeDamage(evt) {
+		this.current -= evt.data.amount;
 
-    if (this.current <= 0) {
-      this.entity.appearance.char = "%";
-      this.entity.remove("Ai");
-      this.entity.remove("IsBlocking");
-      this.entity.add("IsDead");
-      this.entity.remove("Layer400");
-      this.entity.add("Layer300");
-    }
+		if (this.current <= 0) {
+			this.entity.appearance.char = "%";
+			this.entity.remove("Ai");
+			this.entity.remove("IsBlocking");
+			this.entity.add("IsDead");
+			this.entity.remove("Layer400");
+			this.entity.add("Layer300");
+		}
 
-    evt.handle();
-  }
+		evt.handle();
+	}
 }
 
 export class Inventory extends Component {
-  static properties = {
-    list: "<EntityArray>",
-  };
+	static properties = {
+		list: "<EntityArray>",
+	};
 
-  onPickUp(evt) {
-    this.list.push(evt.data);
+	onPickUp(evt) {
+		this.list.push(evt.data);
 
-    if (evt.data.position) {
-      evt.data.remove("Position");
-    }
-  }
+		if (evt.data.position) {
+			evt.data.remove("Position");
+		}
+	}
 
-  onDrop(evt) {
-    remove(this.list, (x) => x.id === evt.data.id);
-    evt.data.add("Position", this.entity.position);
-  }
+	onDrop(evt) {
+		remove(this.list, (x) => x.id === evt.data.id);
+		evt.data.add("Position", this.entity.position);
+	}
 }
 
-export class IsBlocking extends Component {}
 
-export class IsDead extends Component {}
-
-export class IsInFov extends Component {}
-
-export class IsOpaque extends Component {}
-
-export class IsPickup extends Component {}
-
-export class IsRevealed extends Component {}
-
-export class Layer100 extends Component {}
-
-export class Layer300 extends Component {}
-
-export class Layer400 extends Component {}
 
 export class Move extends Component {
-  static properties = { x: 0, y: 0, z: 0, relative: true };
+	static properties = { x: 0, y: 0, z: 0, relative: true };
 }
 
-export class Paralyzed extends Component {}
+export class Paralyzed extends Component { }
 
 export class Position extends Component {
-  static properties = { x: 0, y: 0, z: -1 };
+	static properties = { x: 0, y: 0, z: -1 };
 
-  onAttached() {
-    const locId = `${this.entity.position.x},${this.entity.position.y},${this.entity.position.z}`;
-    addCacheSet("entitiesAtLocation", locId, this.entity.id);
-  }
+	onAttached() {
+		const locId = `${this.entity.position.x},${this.entity.position.y},${this.entity.position.z}`;
+		addCacheSet("entitiesAtLocation", locId, this.entity.id);
+	}
 
-  onDetached() {
-    const locId = `${this.x},${this.y},${this.z}`;
-    deleteCacheSet("entitiesAtLocation", locId, this.entity.id);
-  }
+	onDetached() {
+		const locId = `${this.x},${this.y},${this.z}`;
+		deleteCacheSet("entitiesAtLocation", locId, this.entity.id);
+	}
 }
 
 export class Power extends Component {
-  static properties = { max: 5, current: 5 };
+	static properties = { max: 5, current: 5 };
 }
 
 export class RequiresTarget extends Component {
-  static properties = {
-    acquired: "RANDOM",
-    aoeRange: 0,
-  };
+	static properties = {
+		acquired: "RANDOM",
+		aoeRange: 0,
+	};
 }
 
 export class Target extends Component {
-  static allowMultiple = true;
-  static properties = { locId: "" };
+	static allowMultiple = true;
+	static properties = { locId: "" };
 }
 
 export class TargetingItem extends Component {
-  static properties = { item: "<Entity>" };
+	static properties = { item: "<Entity>" };
 }

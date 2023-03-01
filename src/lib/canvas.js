@@ -64,7 +64,7 @@ canvas.style.cssText = `width: ${calculatedFontSize * grid.width}; height: ${
 canvas.width = cellWidth * grid.width;
 canvas.height = cellHeight * grid.height;
 
-ctx.font = `normal ${fontSize}px 'Fira Code'`;
+ctx.font = `normal ${fontSize}px 'Monaco'`;
 ctx.textAlign = "center";
 ctx.textBaseline = "middle";
 
