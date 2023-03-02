@@ -251,9 +251,9 @@ const renderInventory = (player) => {
   });
 
   drawText({
-    text: "(c)Consume (d)Drop",
+    text: "(C)onsume (D)rop",
     background: "black",
-    color: "#666",
+    color: "#aaa",
     x: grid.inventory.x,
     y: grid.inventory.y + 1,
   });

@@ -124,11 +124,6 @@ const createDungeonLevel = ({
 
   times(10, () => {
     const tile = sample(openTiles);
-    ecs.createPrefab("ScrollParalyze").add(Position, tile);
-  });
-
-  times(10, () => {
-    const tile = sample(openTiles);
     ecs.createPrefab("ScrollFireball").add(Position, tile);
   });
 
@@ -390,6 +385,7 @@ const update = () => {
   if (playerTurn && userInput && gameState === "INVENTORY") {
     processUserInput();
     TargetingSystem();
+	console.log("INVENTORY")
     EffectsSystem();
     RenderSystem(player);
     playerTurn = true;
@@ -397,6 +393,7 @@ const update = () => {
 
   if (playerTurn && userInput && gameState === "GAME") {
     processUserInput();
+	console.log("GAME")
     EffectsSystem();
     MovementSystem();
     FOVSystem(player);
@@ -409,7 +406,8 @@ const update = () => {
 
   if (!playerTurn) {
     AISystem(player);
-    EffectsSystem();
+	console.log("AI")
+    // EffectsSystem();
     MovementSystem();
     FOVSystem(player);
     RenderSystem(player);
@@ -459,6 +457,7 @@ canvas.onclick = (e) => {
 
       gameState = "GAME";
       TargetingSystem();
+	  console.log("TARGETING")
       EffectsSystem();
       RenderSystem(player);
     }

@@ -5,99 +5,84 @@ import { grid } from "../lib/canvas";
 import { Move } from "../state/components";
 
 const movableEntities = ecs.createQuery({
-  all: [Move],
+	all: [Move],
 });
 
 const attack = (entity, target) => {
-  const damage = entity.power.current - target.defense.current;
-  target.fireEvent("take-damage", { amount: damage });
-
-  if (target.health.current <= 0) {
-    return addLog(
-      `${entity.description.name} kicked a ${target.description.name} for ${damage} damage and killed it!`
-    );
-  }
-
-  addLog(
-    `${entity.description.name} kicked a ${target.description.name} for ${damage} damage!`
-  );
-};
-
-const poison = (target) => {
-	const damage = 1;
+	const damage = entity.power.current - target.defense.current;
 	target.fireEvent("take-damage", { amount: damage });
+
 	if (target.health.current <= 0) {
 		return addLog(
-		  `Poison seeped into ${target.description.name}'s blood for ${damage} damage and killed it!`
+			`${entity.description.name} kicked a ${target.description.name} for ${damage} damage and killed it!`
 		);
-	  }
-
-	  addLog(
-		`Poison seeped into ${target.description.name}'s blood for ${damage} damage!`
-	  );
-}
-
-export const MovementSystem = () => {
-  movableEntities.get().forEach((entity) => {
-    if (entity.has("Paralyzed")) {
-      return entity.remove(Move);
-    }
-
-	if (entity.has("Poisoned")) {
-		poison(entity);
 	}
 
-    let mx = entity.move.x;
-    let my = entity.move.y;
-    let mz = entity.move.z;
+	addLog(
+		`${entity.description.name} kicked a ${target.description.name} for ${damage} damage!`
+	);
+};
 
-    if (entity.move.relative) {
-      mx = entity.position.x + entity.move.x;
-      my = entity.position.y + entity.move.y;
-    }
+export const MovementSystem = () => {
+	movableEntities.get().forEach((entity) => {
+		if (entity.has("Paralyzed")) {
+			return entity.remove(Move);
+		}
 
-    // this is where we will run any checks to see if entity can move to new location
-    // observe map boundaries
-    mx = Math.min(grid.map.width + grid.map.x - 1, Math.max(21, mx));
-    my = Math.min(grid.map.height + grid.map.y - 1, Math.max(3, my));
+		let mx = entity.move.x;
+		let my = entity.move.y;
+		let mz = entity.move.z;
 
-    // check for blockers
-    const blockers = [];
-    // read from cache
-    const entitiesAtLoc = readCacheSet(
-      "entitiesAtLocation",
-      `${mx},${my},${mz}`
-    );
+		if (entity.move.relative) {
+			mx = entity.position.x + entity.move.x;
+			my = entity.position.y + entity.move.y;
+		}
 
-    for (const eId of entitiesAtLoc) {
-	let target = ecs.getEntity(eId);
-      if (target.isBlocking) {
-        blockers.push(eId);
-      }
+		// this is where we will run any checks to see if entity can move to new location
+		// observe map boundaries
+		mx = Math.min(grid.map.width + grid.map.x - 1, Math.max(21, mx));
+		my = Math.min(grid.map.height + grid.map.y - 1, Math.max(3, my));
 
-	  if (target.has("Poisoned")) {
-		poison(entity);
-	  }
-    }
-    if (blockers.length) {
-      blockers.forEach((eId) => {
-        const target = ecs.getEntity(eId);
-        if (target.has("Health") && target.has("Defense")) {
-          attack(entity, target);
-        } else {
-          addLog(
-            `${entity.description.name} bump into a ${target.description.name}`
-          );
-        }
-      });
+		// check for blockers
+		const blockers = [];
+		// read from cache
+		const entitiesAtLoc = readCacheSet(
+			"entitiesAtLocation",
+			`${mx},${my},${mz}`
+		);
 
-      entity.remove(Move);
-      return;
-    }
+		for (const eId of entitiesAtLoc) {
+			let target = ecs.getEntity(eId);
 
-    entity.remove("Position");
-    entity.add("Position", { x: mx, y: my, z: mz });
+			// check if target is blocking
+			if (target.isBlocking) {
+				blockers.push(eId);
+			}
 
-    entity.remove(Move);
-  });
+			// propagate poison
+			if (target.has("Poisoned")) {
+				entity.add("Poisoned");
+			}
+		}
+		if (blockers.length) {
+			blockers.forEach((eId) => {
+				const target = ecs.getEntity(eId);
+				if (target.has("Health") && target.has("Defense")) {
+					attack(entity, target);
+				} else {
+					addLog(
+						`${entity.description.name} bump into a ${target.description.name}`
+					);
+				}
+			});
+
+			entity.remove(Move);
+			return;
+		}
+
+		entity.remove("Position");
+		entity.add("Position", { x: mx, y: my, z: mz });
+
+		entity.remove(Move);
+	});
 };

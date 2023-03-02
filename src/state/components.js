@@ -108,7 +108,9 @@ export class Move extends Component {
 }
 
 export class Paralyzed extends Component { }
-export class Poisoned extends Component { }
+export class Poisoned extends Component { 
+	static properties = { damage: 99 };
+}
 
 export class Position extends Component {
 	static properties = { x: 0, y: 0, z: -1 };

@@ -74,7 +74,9 @@ export const PoisonPotion = {
 				addComponents: [
 					{
 						name: "Poisoned",
-						properties: {},
+						properties: {
+							damage: 3,
+						},
 					},
 				],
 				duration: 99,
@@ -84,7 +86,6 @@ export const PoisonPotion = {
 			type: "RequiresTarget",
 			properties: {
 				acquired: "MANUAL",
-				aoeRange: 3,
 			},
 		},
 	],
@@ -145,35 +146,6 @@ export const ScrollLightning = {
 			},
 		},
 		{ type: "RequiresTarget", properties: { acquired: "RANDOM" } },
-	],
-};
-
-export const ScrollParalyze = {
-	name: "ScrollParalyze",
-	inherit: ["Item"],
-	components: [
-		{
-			type: "Appearance",
-			properties: { char: "♪", color: "#F2653E" },
-		},
-		{
-			type: "Description",
-			properties: { name: "scroll of paralyze" },
-		},
-		{
-			type: "Effects",
-			properties: {
-				animate: { color: "#FFB0B0" },
-				addComponents: [
-					{
-						name: "Paralyzed",
-						properties: {},
-					},
-				],
-				duration: 10,
-			},
-		},
-		{ type: "RequiresTarget", properties: { acquired: "MANUAL" } },
 	],
 };
 

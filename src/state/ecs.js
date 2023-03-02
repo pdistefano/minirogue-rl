@@ -37,7 +37,6 @@ import {
   FrostPotion,
   ScrollFireball,
   ScrollLightning,
-  ScrollParalyze,
   Goblin,
   Player,
   Dummy,
@@ -92,7 +91,6 @@ ecs.registerPrefab(Player);
 ecs.registerPrefab(Dummy);
 ecs.registerPrefab(ScrollFireball);
 ecs.registerPrefab(ScrollLightning);
-ecs.registerPrefab(ScrollParalyze);
 ecs.registerPrefab(StairsUp);
 ecs.registerPrefab(StairsDown);
 
