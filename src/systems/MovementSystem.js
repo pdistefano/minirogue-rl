@@ -23,11 +23,29 @@ const attack = (entity, target) => {
   );
 };
 
+const poison = (target) => {
+	const damage = 1;
+	target.fireEvent("take-damage", { amount: damage });
+	if (target.health.current <= 0) {
+		return addLog(
+		  `Poison seeped into ${target.description.name}'s blood for ${damage} damage and killed it!`
+		);
+	  }
+
+	  addLog(
+		`Poison seeped into ${target.description.name}'s blood for ${damage} damage!`
+	  );
+}
+
 export const MovementSystem = () => {
   movableEntities.get().forEach((entity) => {
     if (entity.has("Paralyzed")) {
       return entity.remove(Move);
     }
+
+	if (entity.has("Poisoned")) {
+		poison(entity);
+	}
 
     let mx = entity.move.x;
     let my = entity.move.y;
@@ -52,9 +70,14 @@ export const MovementSystem = () => {
     );
 
     for (const eId of entitiesAtLoc) {
-      if (ecs.getEntity(eId).isBlocking) {
+	let target = ecs.getEntity(eId);
+      if (target.isBlocking) {
         blockers.push(eId);
       }
+
+	  if (target.has("Poisoned")) {
+		poison(entity);
+	  }
     }
     if (blockers.length) {
       blockers.forEach((eId) => {

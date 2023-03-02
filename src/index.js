@@ -109,6 +109,16 @@ const createDungeonLevel = ({
 
   times(10, () => {
     const tile = sample(openTiles);
+    ecs.createPrefab("PoisonPotion").add(Position, tile);
+  });
+
+  times(10, () => {
+    const tile = sample(openTiles);
+    ecs.createPrefab("FrostPotion").add(Position, tile);
+  });
+
+  times(10, () => {
+    const tile = sample(openTiles);
     ecs.createPrefab("ScrollLightning").add(Position, tile);
   });
 

@@ -20,6 +20,7 @@ import {
   Layer400,
   Move,
   Paralyzed,
+  Poisoned,
   Position,
   Power,
   RequiresTarget,
@@ -32,11 +33,14 @@ import {
   Item,
   Tile,
   HealthPotion,
+  PoisonPotion,
+  FrostPotion,
   ScrollFireball,
   ScrollLightning,
   ScrollParalyze,
   Goblin,
   Player,
+  Dummy,
   Wall,
   Floor,
   StairsUp,
@@ -66,6 +70,7 @@ ecs.registerComponent(Layer300);
 ecs.registerComponent(Layer400);
 ecs.registerComponent(Move);
 ecs.registerComponent(Paralyzed);
+ecs.registerComponent(Poisoned);
 ecs.registerComponent(Position);
 ecs.registerComponent(Power);
 ecs.registerComponent(RequiresTarget);
@@ -78,10 +83,13 @@ ecs.registerPrefab(Being);
 ecs.registerPrefab(Item);
 
 ecs.registerPrefab(HealthPotion);
+ecs.registerPrefab(PoisonPotion);
+ecs.registerPrefab(FrostPotion);
 ecs.registerPrefab(Wall);
 ecs.registerPrefab(Floor);
 ecs.registerPrefab(Goblin);
 ecs.registerPrefab(Player);
+ecs.registerPrefab(Dummy);
 ecs.registerPrefab(ScrollFireball);
 ecs.registerPrefab(ScrollLightning);
 ecs.registerPrefab(ScrollParalyze);

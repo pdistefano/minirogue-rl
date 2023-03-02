@@ -32,7 +32,7 @@ export class Animate extends Component {
 	static allowMultiple = true;
 	static properties = {
 		startTime: null,
-		duration: 2500,
+		duration: 500,
 		char: "",
 		color: "",
 	};
@@ -71,7 +71,7 @@ export class Health extends Component {
 
 		if (this.current <= 0) {
 			this.entity.appearance.char = "%";
-			this.entity.remove("Ai");
+			if (this.entity.has("Ai")) this.entity.remove("Ai");
 			this.entity.remove("IsBlocking");
 			this.entity.add("IsDead");
 			this.entity.remove("Layer400");
@@ -108,6 +108,7 @@ export class Move extends Component {
 }
 
 export class Paralyzed extends Component { }
+export class Poisoned extends Component { }
 
 export class Position extends Component {
 	static properties = { x: 0, y: 0, z: -1 };
