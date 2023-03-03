@@ -281,9 +281,9 @@ const processUserInput = () => {
       gameState = "INVENTORY";
     }
 
-    if (userInput === "z") {
-      gameState = "TARGETING";
-    }
+    // if (userInput === "z") {
+    //   gameState = "TARGETING";
+    // }
 
     userInput = null;
   }
@@ -385,7 +385,6 @@ const update = () => {
   if (playerTurn && userInput && gameState === "INVENTORY") {
     processUserInput();
     TargetingSystem();
-	console.log("INVENTORY")
     EffectsSystem();
     RenderSystem(player);
     playerTurn = true;
@@ -393,7 +392,6 @@ const update = () => {
 
   if (playerTurn && userInput && gameState === "GAME") {
     processUserInput();
-	console.log("GAME")
     EffectsSystem();
     MovementSystem();
     FOVSystem(player);
@@ -406,7 +404,6 @@ const update = () => {
 
   if (!playerTurn) {
     AISystem(player);
-	console.log("AI")
     // EffectsSystem();
     MovementSystem();
     FOVSystem(player);
@@ -457,7 +454,6 @@ canvas.onclick = (e) => {
 
       gameState = "GAME";
       TargetingSystem();
-	  console.log("TARGETING")
       EffectsSystem();
       RenderSystem(player);
     }
