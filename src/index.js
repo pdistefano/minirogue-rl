@@ -261,7 +261,7 @@ const processUserInput = () => {
     if (userInput === "ArrowLeft") {
       player.add(Move, { x: -1, y: 0, z: readCache("z") });
     }
-    if (userInput === "g") {
+    if (userInput === "t") {
       let pickupFound = false;
       readCacheSet("entitiesAtLocation", toLocId(player.position)).forEach(
         (eId) => {
