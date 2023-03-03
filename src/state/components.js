@@ -110,7 +110,7 @@ export class Move extends Component {
 
 export class Paralyzed extends Component { }
 export class Poisoned extends Component { 
-	static properties = { damage: 99 };
+	static properties = { damage: 1, onlyAppliesTo: ["IsLiveBeing"] };
 }
 
 export class Position extends Component {
@@ -128,7 +128,7 @@ export class Position extends Component {
 }
 
 export class Power extends Component {
-	static properties = { max: 5, current: 5 };
+	static properties = { max: 5, current: 3 };
 }
 
 export class RequiresTarget extends Component {

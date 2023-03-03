@@ -258,6 +258,14 @@ export const Player = {
 			type: "Description",
 			properties: { name: "You" },
 		},
+		{
+			type: "Power",
+			properties: {
+				current: 4,
+				max: 5,
+			},
+		},
+		
 		{ type: "Inventory" },
 	],
 };
@@ -275,6 +283,20 @@ export const Goblin = {
 			type: "Description",
 			properties: { name: "goblin" },
 		},
+		{
+			type: "Power",
+			properties: {
+				current: 2,
+				max: 2,
+			},
+		},
+		{
+			type: "Defense",
+			properties: {
+				current: 0,
+				max: 1,
+			},
+		}
 	],
 };
 
