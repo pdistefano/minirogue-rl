@@ -5,18 +5,18 @@ const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 
 export const grid = {
-  width: 79,
-  height: 30,
+  width: 50,
+  height: 35,
 
   map: {
-    width: 60,
+    width: 50,
     height: 25,
     x: 0,
     y: 3,
   },
 
   messageLog: {
-    width: 79,
+    width: 50,
     height: 3,
     x: 21,
     y: 0,
@@ -30,9 +30,9 @@ export const grid = {
   },
 
   infoBar: {
-    width: 79,
+    width: 50,
     height: 3,
-    x: 21,
+    x: 0,
     y: 32,
   },
 
@@ -47,14 +47,14 @@ export const grid = {
     width: 100,
     height: 1,
     x: 0,
-    y: 28,
+    y: 33,
   },
 };
 
 const lineHeight = 1.2;
 
 // let calculatedFontSize = window.innerWidth / grid.width;
-let calculatedFontSize = 12;
+let calculatedFontSize = 16;
 let cellWidth = calculatedFontSize * pixelRatio;
 let cellHeight = calculatedFontSize * lineHeight * pixelRatio;
 let fontSize = calculatedFontSize * pixelRatio;
@@ -65,11 +65,15 @@ canvas.style.cssText = `width: ${calculatedFontSize * grid.width}; height: ${
 canvas.width = cellWidth * grid.width;
 canvas.height = cellHeight * grid.height;
 
-ctx.font = `normal ${fontSize}px 'Menlo'`;
+ctx.font = `normal ${fontSize}px 'mr_icons'`;
 ctx.textAlign = "center";
 ctx.textBaseline = "middle";
 
-export const drawChar = ({ char, color, position }) => {
+export const drawChar = ({ char, color, position, isIcon }) => {
+	if (char === "7") {
+		console.warn(isIcon);
+	}
+  ctx.font = `normal ${fontSize}px ${isIcon ? 'mr_icons' : 'Menlo'}`;
   ctx.fillStyle = color;
   ctx.fillText(
     char,
@@ -94,11 +98,12 @@ const drawBackground = ({ color, position }) => {
 export const drawCell = (entity, options = {}) => {
   const char = options.char || entity.appearance.char;
   const background = options.background || entity.appearance.background;
+  const isIcon = options.isIcon || entity.appearance.isIcon;
   const color = options.color || entity.appearance.color;
   const position = entity.position;
 
   drawBackground({ color: background, position });
-  drawChar({ char, color, position });
+  drawChar({ char, color, position,isIcon  });
 };
 
 export const drawText = (template) => {

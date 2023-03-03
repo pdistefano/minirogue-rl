@@ -48,6 +48,7 @@ export class Appearance extends Component {
 		color: "#ff0077",
 		char: "?",
 		background: "#000",
+		isIcon: false
 	};
 }
 
@@ -62,6 +63,10 @@ export class Description extends Component {
 export class Effects extends Component {
 	static allowMultiple = true;
 	static properties = effectProps;
+}
+
+export class Experience extends Component {
+	static properties = { max: 20, current: 0 };
 }
 
 export class Health extends Component {

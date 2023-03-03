@@ -31,7 +31,7 @@ export const TargetingSystem = () => {
       entity.remove("Target");
       entity.remove("TargetingItem");
 
-      addLog(`You use a ${item.description.name}`);
+      addLog(`You used ${item.description.name}`);
 
       item.destroy();
     }

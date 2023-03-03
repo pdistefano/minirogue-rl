@@ -85,31 +85,75 @@ const clearPlayerHud = () => {
 const renderPlayerHud = (player) => {
   clearPlayerHud();
   drawText({
-    text: "♥".repeat(grid.playerHud.width),
+    text: "h".repeat(player.health.max),
     background: "black",
-    color: "#333",
+    color: "#222",
+	isIcon: true,
     x: grid.playerHud.x,
     y: grid.playerHud.y,
   });
 
-  const hp = player.health.current / player.health.max;
-
-  if (hp > 0) {
+  if (player.health.current > 0) {
     drawText({
-      text: "♥".repeat(hp * grid.playerHud.width),
+      text: "h".repeat(player.health.current),
       background: "black",
       color: "red",
+	  isIcon: true,
       x: grid.playerHud.x,
       y: grid.playerHud.y,
     });
   }
 
   drawText({
-    text: `Depth: ${Math.abs(readCache("z"))}`,
+    text: "(".repeat(player.experience.max),
+    background: "black",
+    color: "#222",
+	isIcon: true,
+    x: grid.playerHud.x,
+    y: grid.playerHud.y+ 1,
+  });
+
+drawText({
+	text: "(".repeat(player.experience.current),
+	background: "black",
+	color: "#64ABAA",
+	isIcon: true,
+	x: grid.playerHud.x,
+	y: grid.playerHud.y+ 1,
+});
+
+drawText({
+    text: "a".repeat(player.defense.max),
+    background: "black",
+    color: "#222",
+	isIcon: true,
+    x: grid.playerHud.x,
+    y: grid.playerHud.y+ 2,
+  });
+
+drawText({
+	text: "a".repeat(player.defense.current),
+	background: "black",
+	color: "gray",
+	isIcon: true,
+	x: grid.playerHud.x,
+	y: grid.playerHud.y+ 2,
+});
+
+  drawText({
+    text: `_`,
     background: "black",
     color: "#666",
+	isIcon: true,
     x: grid.playerHud.x,
-    y: grid.playerHud.y + 2,
+    y: grid.playerHud.y + 3,
+  });
+  drawText({
+    text: `${Math.abs(readCache("z"))}`,
+    background: "black",
+    color: "#666",
+    x: grid.playerHud.x + 1,
+    y: grid.playerHud.y + 3,
   });
 };
 

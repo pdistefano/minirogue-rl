@@ -27,6 +27,7 @@ import {
   RequiresTarget,
   Target,
   TargetingItem,
+  Experience,
 } from "./components";
 
 import {
@@ -40,6 +41,7 @@ import {
   ScrollLightning,
   Goblin,
   Player,
+  Armor,
   Dummy,
   Wall,
   Floor,
@@ -58,6 +60,7 @@ ecs.registerComponent(Description);
 ecs.registerComponent(Defense);
 ecs.registerComponent(Effects);
 ecs.registerComponent(Health);
+ecs.registerComponent(Experience);
 ecs.registerComponent(Inventory);
 ecs.registerComponent(IsBlocking);
 ecs.registerComponent(IsLiveBeing);
@@ -95,5 +98,6 @@ ecs.registerPrefab(ScrollFireball);
 ecs.registerPrefab(ScrollLightning);
 ecs.registerPrefab(StairsUp);
 ecs.registerPrefab(StairsDown);
+ecs.registerPrefab(Armor);
 
 export default ecs;

@@ -39,7 +39,7 @@ export const HealthPotion = {
 	components: [
 		{
 			type: "Appearance",
-			properties: { char: "♥", color: "#C84D4A" },
+			properties: { char: "h", color: "#C84D4A", isIcon: true },
 		},
 		{
 			type: "Description",
@@ -62,7 +62,7 @@ export const PoisonPotion = {
 	components: [
 		{
 			type: "Appearance",
-			properties: { char: "p", color: "#68A85E" },
+			properties: { char: "p", color: "#68A85E", isIcon: true },
 		},
 		{
 			type: "Description",
@@ -98,7 +98,7 @@ export const FrostPotion = {
 	components: [
 		{
 			type: "Appearance",
-			properties: { char: "F", color: "#64ABAA" },
+			properties: { char: "8", color: "#64ABAA", isIcon: true },
 		},
 		{
 			type: "Description",
@@ -128,7 +128,7 @@ export const ScrollLightning = {
 	components: [
 		{
 			type: "Appearance",
-			properties: { char: "L", color: "#6600BF" },
+			properties: { char: "C", color: "#6600BF", isIcon: true },
 		},
 		{
 			type: "Description",
@@ -156,7 +156,7 @@ export const ScrollFireball = {
 	components: [
 		{
 			type: "Appearance",
-			properties: { char: "F", color: "#F2653E" },
+			properties: { char: "7", color: "#F2653E", isIcon: true },
 		},
 		{
 			type: "Description",
@@ -184,6 +184,21 @@ export const ScrollFireball = {
 	],
 };
 
+export const Armor = {
+	name: "Armor",
+	inherit: ["Item"],
+	components: [
+		{
+			type: "Appearance",
+			properties: { char: "a", color: "gray", isIcon: true },
+		},
+		{
+			type: "Description",
+			properties: { name: "piece of armor" },
+		},
+	],
+};
+
 export const Wall = {
 	name: "Wall",
 	inherit: ["Tile"],
@@ -192,7 +207,7 @@ export const Wall = {
 		{ type: "IsOpaque" },
 		{
 			type: "Appearance",
-			properties: { char: "#", color: "#AAA" },
+			properties: { char: "#", color: "#AAA"},
 		},
 		{
 			type: "Description",
@@ -222,7 +237,7 @@ export const StairsUp = {
 	components: [
 		{
 			type: "Appearance",
-			properties: { char: "<", color: "#AAA" },
+			properties: { char: "_", color: "#AAA", isIcon: true },
 		},
 		{
 			type: "Description",
@@ -237,7 +252,7 @@ export const StairsDown = {
 	components: [
 		{
 			type: "Appearance",
-			properties: { char: ">", color: "#AAA" },
+			properties: { char: "_", color: "#AAA", isIcon: true },
 		},
 		{
 			type: "Description",
@@ -252,7 +267,7 @@ export const Player = {
 	components: [
 		{
 			type: "Appearance",
-			properties: { char: "@", color: "#FFF" },
+			properties: { char: "@", color: "#FFF", isIcon: false },
 		},
 		{
 			type: "Description",
@@ -265,7 +280,14 @@ export const Player = {
 				max: 5,
 			},
 		},
-		
+		{
+			type: "Defense",
+			properties: {
+				current: 0,
+				max: 4,
+			},
+		},
+		{ type: 'Experience' },
 		{ type: "Inventory" },
 	],
 };

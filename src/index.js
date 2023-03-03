@@ -97,32 +97,32 @@ const createDungeonLevel = ({
     (x) => x.sprite === "FLOOR"
   );
 
-  times(5, () => {
+  times(3, () => {
     const tile = sample(openTiles);
     ecs.createPrefab("Goblin").add(Position, tile);
   });
 
-  times(10, () => {
+  times(2, () => {
     const tile = sample(openTiles);
     ecs.createPrefab("HealthPotion").add(Position, tile);
   });
 
-  times(10, () => {
+  times(1, () => {
     const tile = sample(openTiles);
     ecs.createPrefab("PoisonPotion").add(Position, tile);
   });
 
-  times(10, () => {
+  times(1, () => {
     const tile = sample(openTiles);
     ecs.createPrefab("FrostPotion").add(Position, tile);
   });
 
   times(10, () => {
     const tile = sample(openTiles);
-    ecs.createPrefab("ScrollLightning").add(Position, tile);
+    ecs.createPrefab("Armor").add(Position, tile);
   });
 
-  times(10, () => {
+  times(1, () => {
     const tile = sample(openTiles);
     ecs.createPrefab("ScrollFireball").add(Position, tile);
   });
