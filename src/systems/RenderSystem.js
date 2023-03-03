@@ -36,7 +36,7 @@ const layer400Entities = ecs.createQuery({
 });
 
 const clearMap = () => {
-  clearCanvas(grid.map.x - 1, grid.map.y, grid.map.width + 1, grid.map.height);
+  clearCanvas(grid.map.x, grid.map.y, grid.map.width, grid.map.height);
 };
 
 const renderMap = () => {
