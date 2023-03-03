@@ -40,8 +40,8 @@ export const MovementSystem = () => {
 
 		// this is where we will run any checks to see if entity can move to new location
 		// observe map boundaries
-		mx = Math.min(grid.map.width + grid.map.x - 1, Math.max(21, mx));
-		my = Math.min(grid.map.height + grid.map.y - 1, Math.max(3, my));
+		mx = Math.min(grid.map.width + grid.map.x, Math.max(grid.map.x, mx));
+		my = Math.min(grid.map.height + grid.map.y, Math.max(grid.map.y, my));
 
 		// check for blockers
 		const blockers = [];
@@ -60,9 +60,10 @@ export const MovementSystem = () => {
 			}
 
 			// propagate poison
-			if (target.has("Poisoned")) {
-				entity.add("Poisoned");
-			}
+			// if (target.has("Poisoned") && entity.has("Health")) {
+			// 	console.log(`Entity ${entity.id} has Poison and Health!`);
+			// 	entity.add("Poisoned");
+			// }
 		}
 		if (blockers.length) {
 			blockers.forEach((eId) => {
