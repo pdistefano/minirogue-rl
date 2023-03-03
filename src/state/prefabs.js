@@ -18,6 +18,7 @@ export const Being = {
 		{ type: "IsBlocking" },
 		{ type: "Layer400" },
 		{ type: "Power" },
+		{ type: "IsLiveBeing" },
 	],
 };
 

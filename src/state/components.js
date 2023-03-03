@@ -2,6 +2,7 @@ import { remove } from "lodash";
 import { Component } from "geotic";
 import { addCacheSet, deleteCacheSet } from "./cache";
 
+export class IsLiveBeing extends Component { }
 export class IsBlocking extends Component { }
 export class IsDead extends Component { }
 export class IsInFov extends Component { }
