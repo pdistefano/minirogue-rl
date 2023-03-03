@@ -19,49 +19,71 @@ const poison = (target) => {
 		`Poison seeped into ${target.description.name}'s blood for ${damage} damage!`
 	);
 }
-
+// TODO: Fix the Active Effects system that keeps adding the same component
+// and stores the effects weirdly. Active effects have "addComponents", which tells 
+// me it should remove them after they have been added. Something is not right.
 export const EffectsSystem = () => {
 	activeEffectsEntities.get().forEach((entity) => {
-		entity.activeEffects.forEach((c) => {
-			if (entity[c.component]) {
-				entity[c.component].current += c.delta;
+		entity.activeEffects.forEach((activeEffect) => {
+			if (entity[activeEffect.component]) {
+				entity[activeEffect.component].current += activeEffect.delta;
 
-				if (entity[c.component].current > entity[c.component].max) {
-					entity[c.component].current = entity[c.component].max;
+				if (entity[activeEffect.component].current > entity[activeEffect.component].max) {
+					entity[activeEffect.component].current = entity[activeEffect.component].max;
 				}
 			}
 
-			if (c.events.length) {
-				c.events.forEach((event) => entity.fireEvent(event.name, event.args));
+			if (activeEffect.events.length) {
+				activeEffect.events.forEach((event) => entity.fireEvent(event.name, event.args));
 			}
 
 			// handle addComponents
-			if (c.addComponents.length) {
-				c.addComponents.forEach((component) => {
+			if (activeEffect.addComponents.length) {
+				activeEffect.addComponents.forEach((component) => {
+					
 					if (!entity.has(component.name)) {
-						entity.add(component.name, component.properties);
+
+						let baseComponent = ecs.components.get(component.name);
+
+						// merge base component properties with component properties
+						// Currently, Active Effects are using the properties imparted by the 
+						// prefab active effect, but don't have the properties of the base component.
+						// To me it makes sense to have a base Component, with its properties, and then
+						// have the prefab effect override certain props to make it unique.
+						component.properties = { ...baseComponent.properties, ...component.properties };
+
+						if (component.properties.onlyAppliesTo) {
+							if (entity.has(component.properties.onlyAppliesTo[0]))
+							{
+								entity.add(component.name, component.properties);
+							}
+						}
+						else {
+							console.warn(`${component.name} added to ${entity.description.name}`)
+							entity.add(component.name, component.properties);
+						}
 					}
 				});
 			}
 
-			entity.add("Animate", { ...c.animate });
+			entity.add("Animate", { ...activeEffect.animate });
 
-			if (entity.has("Poisoned")) {
+			if (entity.has("Poisoned") && entity.has("IsLiveBeing")) {
 				poison(entity);
 			}
 
-			if (!c.duration) {
-				c.remove();
+			if (!activeEffect.duration) {
+				activeEffect.remove();
 
-				if (c.addComponents.length) {
-					c.addComponents.forEach((component) => {
+				if (activeEffect.addComponents.length) {
+					activeEffect.addComponents.forEach((component) => {
 						if (entity.has(component.name)) {
 							entity.remove(component.name, component.properties);
 						}
 					});
 				}
 			} else {
-				c.duration -= 1;
+				activeEffect.duration -= 1;
 			}
 		});
 	});
