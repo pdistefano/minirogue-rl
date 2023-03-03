@@ -2,6 +2,7 @@ import { random, times } from "lodash";
 import ecs from "../state/ecs";
 import { rectangle, rectsIntersect } from "./grid";
 import { Position } from "../state/components";
+import { grid } from "./canvas";
 
 function digHorizontalPassage(x1, x2, y, z) {
   const tiles = {};
@@ -37,9 +38,9 @@ export const createDungeon = ({
   z,
   width,
   height,
-  minRoomSize = 6,
-  maxRoomSize = 12,
-  maxRoomCount = 30,
+  minRoomSize = 5,
+  maxRoomSize = Math.min(grid.map.height - 2, 12),
+  maxRoomCount = 18,
 }) => {
   // fill the entire space with walls so we can dig it out later
   const dungeon = rectangle(
