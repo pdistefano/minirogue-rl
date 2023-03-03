@@ -283,7 +283,7 @@ const renderInventory = (player) => {
 
 const renderMenu = () => {
   drawText({
-    text: `(I)nventory (g)Pickup (arrow keys)Move/Attack (<)Stairs Up (>)Stairs Down`,
+    text: `(I)nventory (T)ake (arrow keys)Move/Attack (<)Stairs Up (>)Stairs Down`,
     background: "#000",
     color: "#66f",
     x: grid.menu.x,
