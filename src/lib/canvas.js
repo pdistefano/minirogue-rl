@@ -5,13 +5,13 @@ const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 
 export const grid = {
-  width: 100,
-  height: 35,
+  width: 79,
+  height: 30,
 
   map: {
-    width: 79,
-    height: 29,
-    x: 21,
+    width: 60,
+    height: 25,
+    x: 0,
     y: 3,
   },
 
@@ -24,7 +24,7 @@ export const grid = {
 
   playerHud: {
     width: 20,
-    height: 34,
+    height: 3,
     x: 0,
     y: 0,
   },
@@ -47,13 +47,14 @@ export const grid = {
     width: 100,
     height: 1,
     x: 0,
-    y: 33,
+    y: 28,
   },
 };
 
 const lineHeight = 1.2;
 
-let calculatedFontSize = window.innerWidth / grid.width;
+// let calculatedFontSize = window.innerWidth / grid.width;
+let calculatedFontSize = 12;
 let cellWidth = calculatedFontSize * pixelRatio;
 let cellHeight = calculatedFontSize * lineHeight * pixelRatio;
 let fontSize = calculatedFontSize * pixelRatio;
