@@ -39,7 +39,7 @@ export const HealthPotion = {
 	components: [
 		{
 			type: "Appearance",
-			properties: { char: "h", color: "#C84D4A", isIcon: true },
+			properties: { char: "♥", color: "#C84D4A"},
 		},
 		{
 			type: "Description",
@@ -207,7 +207,7 @@ export const Wall = {
 		{ type: "IsOpaque" },
 		{
 			type: "Appearance",
-			properties: { char: "#", color: "#AAA"},
+			properties: { char: "▓", color: "#AAA"},
 		},
 		{
 			type: "Description",
@@ -222,7 +222,7 @@ export const Floor = {
 	components: [
 		{
 			type: "Appearance",
-			properties: { char: "•", color: "#333" },
+			properties: { char: ".", color: "#333" },
 		},
 		{
 			type: "Description",

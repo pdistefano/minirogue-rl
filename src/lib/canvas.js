@@ -54,9 +54,9 @@ export const grid = {
 const lineHeight = 1.2;
 
 // let calculatedFontSize = window.innerWidth / grid.width;
-let calculatedFontSize = 16;
+let calculatedFontSize = 20;
 let cellWidth = calculatedFontSize * pixelRatio;
-let cellHeight = calculatedFontSize * lineHeight * pixelRatio;
+let cellHeight = calculatedFontSize * lineHeight;
 let fontSize = calculatedFontSize * pixelRatio;
 
 canvas.style.cssText = `width: ${calculatedFontSize * grid.width}; height: ${
@@ -73,7 +73,7 @@ export const drawChar = ({ char, color, position, isIcon }) => {
 	if (char === "7") {
 		console.warn(isIcon);
 	}
-  ctx.font = `normal ${fontSize}px ${isIcon ? 'mr_icons' : 'Menlo'}`;
+  ctx.font = `normal ${fontSize}px ${isIcon ? 'mr_icons' : 'Mx437 IBM BIOS'}`;
   ctx.fillStyle = color;
   ctx.fillText(
     char,

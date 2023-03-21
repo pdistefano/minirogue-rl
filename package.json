@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "NODE_ENV='production' webpack",
+    "build": "webpack",
     "deploy": "gh-pages -d dist",
     "predeploy": "npm run build",
     "preprod": "rm -rf ./dist && npm run build && npx http-server ./dist -o -p 1234",
-    "start": "NODE_ENV='development' webpack-dev-server",
+    "start": "webpack-dev-server",
     "test": "jest"
   },
   "author": "",
