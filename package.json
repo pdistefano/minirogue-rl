@@ -1,5 +1,5 @@
 {
-  "name": "gobs-o-goblins",
+  "name": "mini-rogue-rl",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "deploy": "gh-pages -d dist",
     "predeploy": "npm run build",
     "preprod": "rm -rf ./dist && npm run build && npx http-server ./dist -o -p 1234",
-    "start": "webpack-dev-server",
+    "start": "set NODE_OPTIONS=--openssl-legacy-provider && webpack-dev-server",
     "test": "jest"
   },
   "author": "",

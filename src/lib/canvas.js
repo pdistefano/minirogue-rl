@@ -3,6 +3,8 @@ import { rectangle } from "./grid";
 const pixelRatio = window.devicePixelRatio || 1;
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
+const FONT_ICON = "mr_icons";
+const FONT_ASCII = "Mx437 IBM BIOS";
 
 export const grid = {
   width: 50,
@@ -65,7 +67,7 @@ canvas.style.cssText = `width: ${calculatedFontSize * grid.width}; height: ${
 canvas.width = cellWidth * grid.width;
 canvas.height = cellHeight * grid.height;
 
-ctx.font = `normal ${fontSize}px 'mr_icons'`;
+ctx.font = `normal ${fontSize}px '${FONT_ICON}'`;
 ctx.textAlign = "center";
 ctx.textBaseline = "middle";
 
@@ -73,7 +75,7 @@ export const drawChar = ({ char, color, position, isIcon }) => {
 	if (char === "7") {
 		console.warn(isIcon);
 	}
-  ctx.font = `normal ${fontSize}px ${isIcon ? 'mr_icons' : 'Mx437 IBM BIOS'}`;
+  ctx.font = `normal ${fontSize}px ${isIcon ? FONT_ICON : FONT_ASCII}`;
   ctx.fillStyle = color;
   ctx.fillText(
     char,

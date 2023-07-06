@@ -66,7 +66,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new HtmlWebpackPlugin({
-      title: "Gobs O' Goblins",
+      title: "Mini Rogue RL",
       template: "index.html",
       version: gitRevisionPlugin.commithash().slice(0, 7),
     }),

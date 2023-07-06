@@ -21,7 +21,7 @@ import { TargetingSystem } from "./systems/TargetingSystem";
 import ecs from "./state/ecs";
 import { IsInFov, Move, Position, Ai } from "./state/components";
 
-export let messageLog = ["", "Welcome to Gobs 'O Goblins!", ""];
+export let messageLog = ["", "Welcome to Mini Rogue RL!", ""];
 export const addLog = (text) => {
   messageLog.unshift(text);
 };
