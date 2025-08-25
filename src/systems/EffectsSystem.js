@@ -66,10 +66,10 @@ export const EffectsSystem = () => {
 				});
 			}
 
-			entity.add("Animate", { ...activeEffect.animate });
-
 			if (entity.has("Poisoned") && entity.has("IsLiveBeing")) {
 				poison(entity);
+				// Only animate if the entity == Poisoned + isLiveBeing
+				entity.add("Animate", { ...activeEffect.animate }); 
 			}
 
 			if (!activeEffect.duration) {

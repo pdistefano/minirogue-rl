@@ -77,9 +77,20 @@ export class Health extends Component {
 
 		if (this.current <= 0) {
 			this.entity.appearance.char = "%";
-			if (this.entity.has("Ai")) this.entity.remove("Ai");
+			
+			if (this.entity.has("Ai")) 
+			{
+				this.entity.remove("Ai");
+			}
+
+			if (this.entity.has("IsLiveBeing")) 
+			{
+				this.entity.remove("IsLiveBeing");
+			}
+
 			this.entity.remove("IsBlocking");
 			this.entity.add("IsDead");
+			
 			this.entity.remove("Layer400");
 			this.entity.add("Layer300");
 		}
