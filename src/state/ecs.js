@@ -1,103 +1,57 @@
 import { Engine } from "geotic";
-import {
-  ActiveEffects,
-  Ai,
-  Animate,
-  Appearance,
-  Description,
-  Defense,
-  Effects,
-  Health,
-  Inventory,
-  IsBlocking,
-  IsLiveBeing,
-  IsDead,
-  IsInFov,
-  IsOpaque,
-  IsPickup,
-  IsRevealed,
-  Layer100,
-  Layer300,
-  Layer400,
-  Move,
-  Paralyzed,
-  Poisoned,
-  Position,
-  Power,
-  RequiresTarget,
-  Target,
-  TargetingItem,
-  Experience,
-} from "./components";
-
-import {
-  Being,
-  Item,
-  Tile,
-  HealthPotion,
-  PoisonPotion,
-  FrostPotion,
-  ScrollFireball,
-  ScrollLightning,
-  Goblin,
-  Player,
-  Armor,
-  Dummy,
-  Wall,
-  Floor,
-  StairsUp,
-  StairsDown,
-} from "./prefabs";
+import * as Components from "./components";
+import * as Prefabs from "./prefabs";
 
 const ecs = new Engine();
 
 // all Components must be `registered` by the engine
-ecs.registerComponent(ActiveEffects);
-ecs.registerComponent(Animate);
-ecs.registerComponent(Ai);
-ecs.registerComponent(Appearance);
-ecs.registerComponent(Description);
-ecs.registerComponent(Defense);
-ecs.registerComponent(Effects);
-ecs.registerComponent(Health);
-ecs.registerComponent(Experience);
-ecs.registerComponent(Inventory);
-ecs.registerComponent(IsBlocking);
-ecs.registerComponent(IsLiveBeing);
-ecs.registerComponent(IsDead);
-ecs.registerComponent(IsInFov);
-ecs.registerComponent(IsOpaque);
-ecs.registerComponent(IsPickup);
-ecs.registerComponent(IsRevealed);
-ecs.registerComponent(Layer100);
-ecs.registerComponent(Layer300);
-ecs.registerComponent(Layer400);
-ecs.registerComponent(Move);
-ecs.registerComponent(Paralyzed);
-ecs.registerComponent(Poisoned);
-ecs.registerComponent(Position);
-ecs.registerComponent(Power);
-ecs.registerComponent(RequiresTarget);
-ecs.registerComponent(Target);
-ecs.registerComponent(TargetingItem);
+ecs.registerComponent(Components.ActiveEffects);
+ecs.registerComponent(Components.Ai);
+ecs.registerComponent(Components.Animate);
+ecs.registerComponent(Components.Appearance);
+ecs.registerComponent(Components.Defense);
+ecs.registerComponent(Components.Description);
+ecs.registerComponent(Components.Effects);
+ecs.registerComponent(Components.Experience);
+ecs.registerComponent(Components.Health);
+ecs.registerComponent(Components.Inventory);
+ecs.registerComponent(Components.IsBlocking);
+ecs.registerComponent(Components.IsDead);
+ecs.registerComponent(Components.IsInFov);
+ecs.registerComponent(Components.IsLiveBeing);
+ecs.registerComponent(Components.IsOpaque);
+ecs.registerComponent(Components.IsPickup);
+ecs.registerComponent(Components.IsRevealed);
+ecs.registerComponent(Components.Layer100);
+ecs.registerComponent(Components.Layer300);
+ecs.registerComponent(Components.Layer400);
+ecs.registerComponent(Components.Move);
+ecs.registerComponent(Components.Paralyzed);
+ecs.registerComponent(Components.Poisoned);
+ecs.registerComponent(Components.Position);
+ecs.registerComponent(Components.Power);
+ecs.registerComponent(Components.RequiresTarget);
+ecs.registerComponent(Components.Target);
+ecs.registerComponent(Components.TargetingItem);
 
 // register "base" prefabs first!
-ecs.registerPrefab(Tile);
-ecs.registerPrefab(Being);
-ecs.registerPrefab(Item);
+ecs.registerPrefab(Prefabs.Tile);
+ecs.registerPrefab(Prefabs.Being);
+ecs.registerPrefab(Prefabs.Item);
+// end base prefabs
 
-ecs.registerPrefab(HealthPotion);
-ecs.registerPrefab(PoisonPotion);
-ecs.registerPrefab(FrostPotion);
-ecs.registerPrefab(Wall);
-ecs.registerPrefab(Floor);
-ecs.registerPrefab(Goblin);
-ecs.registerPrefab(Player);
-ecs.registerPrefab(Dummy);
-ecs.registerPrefab(ScrollFireball);
-ecs.registerPrefab(ScrollLightning);
-ecs.registerPrefab(StairsUp);
-ecs.registerPrefab(StairsDown);
-ecs.registerPrefab(Armor);
+ecs.registerPrefab(Prefabs.Armor);
+ecs.registerPrefab(Prefabs.Dummy);
+ecs.registerPrefab(Prefabs.Floor);
+ecs.registerPrefab(Prefabs.FrostPotion);
+ecs.registerPrefab(Prefabs.Goblin);
+ecs.registerPrefab(Prefabs.HealthPotion);
+ecs.registerPrefab(Prefabs.Player);
+ecs.registerPrefab(Prefabs.PoisonPotion);
+ecs.registerPrefab(Prefabs.ScrollFireball);
+ecs.registerPrefab(Prefabs.ScrollLightning);
+ecs.registerPrefab(Prefabs.StairsDown);
+ecs.registerPrefab(Prefabs.StairsUp);
+ecs.registerPrefab(Prefabs.Wall);
 
 export default ecs;
