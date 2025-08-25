@@ -42,6 +42,10 @@ export const HealthPotion = {
 			properties: { char: "♥", color: "#C84D4A"},
 		},
 		{
+			type: "Consumable",
+			properties: { isDrinkable: true},
+		},
+		{
 			type: "Description",
 			properties: { name: "health potion" },
 		},
@@ -63,6 +67,10 @@ export const PoisonPotion = {
 		{
 			type: "Appearance",
 			properties: { char: "p", color: "#68A85E", isIcon: true },
+		},
+		{
+			type: "Consumable",
+			properties: { isDrinkable: true},
 		},
 		{
 			type: "Description",
@@ -101,6 +109,10 @@ export const FrostPotion = {
 			properties: { char: "8", color: "#64ABAA", isIcon: true },
 		},
 		{
+			type: "Consumable",
+			properties: { isDrinkable: true},
+		},
+		{
 			type: "Description",
 			properties: { name: "frost potion" },
 		},
@@ -131,6 +143,10 @@ export const ScrollLightning = {
 			properties: { char: "C", color: "#6600BF", isIcon: true },
 		},
 		{
+			type: "Consumable",
+			properties: { isReadable: true},
+		},
+		{
 			type: "Description",
 			properties: { name: "scroll of lightning" },
 		},
@@ -157,6 +173,10 @@ export const ScrollFireball = {
 		{
 			type: "Appearance",
 			properties: { char: "7", color: "#F2653E", isIcon: true },
+		},
+		{
+			type: "Consumable",
+			properties: { isReadable: true},
 		},
 		{
 			type: "Description",

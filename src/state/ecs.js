@@ -9,6 +9,7 @@ ecs.registerComponent(Components.ActiveEffects);
 ecs.registerComponent(Components.Ai);
 ecs.registerComponent(Components.Animate);
 ecs.registerComponent(Components.Appearance);
+ecs.registerComponent(Components.Consumable);
 ecs.registerComponent(Components.Defense);
 ecs.registerComponent(Components.Description);
 ecs.registerComponent(Components.Effects);

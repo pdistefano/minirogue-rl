@@ -52,6 +52,14 @@ export class Appearance extends Component {
 	};
 }
 
+export class Consumable extends Component
+{
+	static properties = {
+		isDrinkable: false,
+		isReadable: false
+	}
+}
+
 export class Defense extends Component {
 	static properties = { max: 1, current: 1 };
 }
