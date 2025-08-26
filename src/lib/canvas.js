@@ -72,9 +72,6 @@ ctx.textAlign = "center";
 ctx.textBaseline = "middle";
 
 export const drawChar = ({ char, color, position, isIcon }) => {
-	if (char === "7") {
-		console.warn(isIcon);
-	}
   ctx.font = `normal ${fontSize}px ${isIcon ? FONT_ICON : FONT_ASCII}`;
   ctx.fillStyle = color;
   ctx.fillText(

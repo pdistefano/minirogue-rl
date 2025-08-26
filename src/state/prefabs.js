@@ -1,34 +1,56 @@
+import
+	{
+		Ai,
+		Appearance,
+		Consumable,
+		Defense,
+		Description,
+		Effects,
+		Experience,
+		Health,
+		Inventory,
+		IsBlocking,
+		IsLiveBeing,
+		IsOpaque,
+		IsPickup,
+		Layer100,
+		Layer300,
+		Layer400,
+		Power,
+		RequiresTarget
+	} from "./components";
+
 // Base
 export const Tile = {
 	name: "Tile",
 	components: [
-		{ type: "Appearance" },
-		{ type: "Description" },
-		{ type: "Layer100" },
+		{ type: Appearance },
+		{ type: Description },
+		{ type: Layer100 },
 	],
 };
 
 export const Being = {
 	name: "Being",
 	components: [
-		{ type: "Appearance" },
-		{ type: "Defense" },
-		{ type: "Description" },
-		{ type: "Health" },
-		{ type: "IsBlocking" },
-		{ type: "Layer400" },
-		{ type: "Power" },
-		{ type: "IsLiveBeing" },
+		{ type: Appearance },
+		{ type: Defense },
+		{ type: Description },
+		{ type: Health },
+		{ type: IsBlocking },
+		{ type: Layer400 },
+		{ type: Power },
+		{ type: IsLiveBeing },
 	],
 };
 
 export const Item = {
 	name: "Item",
 	components: [
-		{ type: "Appearance" },
-		{ type: "Description" },
-		{ type: "Layer300" },
-		{ type: "IsPickup" },
+		{ type: Appearance },
+		{ type: Description },
+		{ type: Layer300 },
+		{ type: IsPickup },
 	],
 };
 
@@ -38,19 +60,19 @@ export const HealthPotion = {
 	inherit: ["Item"],
 	components: [
 		{
-			type: "Appearance",
-			properties: { char: "♥", color: "#C84D4A"},
+			type: Appearance,
+			properties: { char: "♥", color: "#C84D4A" },
 		},
 		{
-			type: "Consumable",
-			properties: { isDrinkable: true},
+			type: Consumable,
+			properties: { isDrinkable: true },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "health potion" },
 		},
 		{
-			type: "Effects",
+			type: Effects,
 			properties: {
 				component: "health",
 				delta: 5,
@@ -65,21 +87,21 @@ export const PoisonPotion = {
 	inherit: ["Item"],
 	components: [
 		{
-			type: "Appearance",
+			type: Appearance,
 			properties: { char: "p", color: "#68A85E", isIcon: true },
 		},
 		{
-			type: "Consumable",
-			properties: { isDrinkable: true},
+			type: Consumable,
+			properties: { isDrinkable: true },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "poison potion" },
 		},
 		{
-			type: "Effects",
+			type: Effects,
 			properties: {
-				animate: { color: "#68A85E"},
+				animate: { color: "#68A85E" },
 				addComponents: [
 					{
 						name: "Poisoned",
@@ -91,8 +113,8 @@ export const PoisonPotion = {
 				duration: 99,
 			},
 		},
-		{ 
-			type: "RequiresTarget",
+		{
+			type: RequiresTarget,
 			properties: {
 				acquired: "MANUAL",
 			},
@@ -105,21 +127,21 @@ export const FrostPotion = {
 	inherit: ["Item"],
 	components: [
 		{
-			type: "Appearance",
+			type: Appearance,
 			properties: { char: "8", color: "#64ABAA", isIcon: true },
 		},
 		{
-			type: "Consumable",
-			properties: { isDrinkable: true},
+			type: Consumable,
+			properties: { isDrinkable: true },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "frost potion" },
 		},
 		{
-			type: "Effects",
+			type: Effects,
 			properties: {
-				animate: { color: "#64ABAA"},
+				animate: { color: "#64ABAA" },
 				addComponents: [
 					{
 						name: "Paralyzed",
@@ -129,7 +151,7 @@ export const FrostPotion = {
 				duration: 5,
 			}
 		},
-		{ type: "RequiresTarget", properties: { acquired: "MANUAL" } },
+		{ type: RequiresTarget, properties: { acquired: "MANUAL" } },
 	],
 };
 
@@ -139,19 +161,19 @@ export const ScrollLightning = {
 	inherit: ["Item"],
 	components: [
 		{
-			type: "Appearance",
+			type: Appearance,
 			properties: { char: "C", color: "#6600BF", isIcon: true },
 		},
 		{
-			type: "Consumable",
-			properties: { isReadable: true},
+			type: Consumable,
+			properties: { isReadable: true },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "scroll of lightning" },
 		},
 		{
-			type: "Effects",
+			type: Effects,
 			properties: {
 				animate: { color: "#6600BF" },
 				events: [
@@ -162,7 +184,7 @@ export const ScrollLightning = {
 				],
 			},
 		},
-		{ type: "RequiresTarget", properties: { acquired: "RANDOM" } },
+		{ type: RequiresTarget, properties: { acquired: "RANDOM" } },
 	],
 };
 
@@ -171,19 +193,19 @@ export const ScrollFireball = {
 	inherit: ["Item"],
 	components: [
 		{
-			type: "Appearance",
+			type: Appearance,
 			properties: { char: "7", color: "#F2653E", isIcon: true },
 		},
 		{
-			type: "Consumable",
-			properties: { isReadable: true},
+			type: Consumable,
+			properties: { isReadable: true },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "scroll of fireball" },
 		},
 		{
-			type: "Effects",
+			type: Effects,
 			properties: {
 				animate: { color: "#F2653E", char: "^" },
 				events: [
@@ -195,7 +217,7 @@ export const ScrollFireball = {
 			},
 		},
 		{
-			type: "RequiresTarget",
+			type: RequiresTarget,
 			properties: {
 				acquired: "MANUAL",
 				aoeRange: 3,
@@ -209,11 +231,11 @@ export const Armor = {
 	inherit: ["Item"],
 	components: [
 		{
-			type: "Appearance",
+			type: Appearance,
 			properties: { char: "a", color: "gray", isIcon: true },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "piece of armor" },
 		},
 	],
@@ -223,14 +245,14 @@ export const Wall = {
 	name: "Wall",
 	inherit: ["Tile"],
 	components: [
-		{ type: "IsBlocking" },
-		{ type: "IsOpaque" },
+		{ type: IsBlocking },
+		{ type: IsOpaque },
 		{
-			type: "Appearance",
-			properties: { char: "▓", color: "#AAA"},
+			type: Appearance,
+			properties: { char: "▓", color: "#AAA" },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "wall" },
 		},
 	],
@@ -241,11 +263,11 @@ export const Floor = {
 	inherit: ["Tile"],
 	components: [
 		{
-			type: "Appearance",
+			type: Appearance,
 			properties: { char: ".", color: "#333" },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "floor" },
 		},
 	],
@@ -256,11 +278,11 @@ export const StairsUp = {
 	inherit: ["Tile"],
 	components: [
 		{
-			type: "Appearance",
+			type: Appearance,
 			properties: { char: "_", color: "#AAA", isIcon: true },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "set of stairs leading up" },
 		},
 	],
@@ -271,11 +293,11 @@ export const StairsDown = {
 	inherit: ["Tile"],
 	components: [
 		{
-			type: "Appearance",
+			type: Appearance,
 			properties: { char: "_", color: "#AAA", isIcon: true },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "set of stairs leading down" },
 		},
 	],
@@ -286,29 +308,29 @@ export const Player = {
 	inherit: ["Being"],
 	components: [
 		{
-			type: "Appearance",
+			type: Appearance,
 			properties: { char: "@", color: "#FFF", isIcon: false },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "You" },
 		},
 		{
-			type: "Power",
+			type: Power,
 			properties: {
 				current: 4,
 				max: 5,
 			},
 		},
 		{
-			type: "Defense",
+			type: Defense,
 			properties: {
 				current: 0,
 				max: 4,
 			},
 		},
-		{ type: 'Experience' },
-		{ type: "Inventory" },
+		{ type: Experience },
+		{ type: Inventory },
 	],
 };
 
@@ -316,24 +338,24 @@ export const Goblin = {
 	name: "Goblin",
 	inherit: ["Being"],
 	components: [
-		{ type: "Ai" },
+		{ type: Ai },
 		{
-			type: "Appearance",
+			type: Appearance,
 			properties: { char: "g", color: "green" },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "goblin" },
 		},
 		{
-			type: "Power",
+			type: Power,
 			properties: {
 				current: 2,
 				max: 2,
 			},
 		},
 		{
-			type: "Defense",
+			type: Defense,
 			properties: {
 				current: 0,
 				max: 1,
@@ -347,11 +369,11 @@ export const Dummy = {
 	inherit: ["Being"],
 	components: [
 		{
-			type: "Appearance",
+			type: Appearance,
 			properties: { char: "d", color: "white" },
 		},
 		{
-			type: "Description",
+			type: Description,
 			properties: { name: "dummy" },
 		},
 	],
