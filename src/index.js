@@ -1,7 +1,8 @@
 import { get, sample, times } from "lodash";
-import "./lib/canvas.js";
 import { grid, pxToCell } from "./lib/canvas";
-import { toCell, toLocId, circle } from "./lib/grid";
+import "./lib/canvas.js";
+import { createDungeon } from "./lib/dungeon";
+import { circle, toCell, toLocId } from "./lib/grid";
 import
 	{
 		addCache,
@@ -11,7 +12,9 @@ import
 		readCacheSet,
 		serializeCache,
 	} from "./state/cache";
-import { createDungeon } from "./lib/dungeon";
+import { Ai, IsInFov, Move, Position } from "./state/components";
+import ecs from "./state/ecs";
+import { Armor, FrostPotion, Goblin, HealthPotion, Player, PoisonPotion, ScrollFireball, StairsDown, StairsUp } from "./state/prefabs.js";
 import { AISystem } from "./systems/AISystem";
 import { AnimationSystem } from "./systems/AnimationSystem";
 import { EffectsSystem } from "./systems/EffectsSystem";
@@ -19,14 +22,19 @@ import { FOVSystem } from "./systems/FOVSystem";
 import { MovementSystem } from "./systems/MovementSystem";
 import { RenderSystem } from "./systems/RenderSystem";
 import { TargetingSystem } from "./systems/TargetingSystem";
-import ecs from "./state/ecs";
-import { IsInFov, Move, Position, Ai } from "./state/components";
 
 export let messageLog = ["", "Welcome to Mini Rogue RL!", ""];
 export const addLog = (text) =>
 {
 	messageLog.unshift(text);
 };
+
+const GameStates = {
+	GAME: 0,
+	INVENTORY: 1,
+	TARGETING: 2,
+	GAMEOVER: 3
+}
 
 const saveGame = () =>
 {
@@ -62,7 +70,7 @@ const loadGame = () =>
 
 	userInput = null;
 	playerTurn = true;
-	gameState = "GAME";
+	gameState = GameStates.GAME;
 	selectedInventoryIndex = 0;
 
 	messageLog = data.messageLog;
@@ -79,7 +87,7 @@ const newGame = () =>
 
 	userInput = null;
 	playerTurn = true;
-	gameState = "GAME";
+	gameState = GameStates.GAME;
 	selectedInventoryIndex = 0;
 
 	messageLog = ["", "Welcome to Gobs 'O Goblins!", ""];
@@ -109,37 +117,37 @@ const createDungeonLevel = ({
 	times(3, () =>
 	{
 		const tile = sample(openTiles);
-		ecs.createPrefab("Goblin").add(Position, tile);
+		ecs.createPrefab(Goblin).add(Position, tile);
 	});
 
 	times(2, () =>
 	{
 		const tile = sample(openTiles);
-		ecs.createPrefab("HealthPotion").add(Position, tile);
+		ecs.createPrefab(HealthPotion).add(Position, tile);
 	});
 
 	times(1, () =>
 	{
 		const tile = sample(openTiles);
-		ecs.createPrefab("PoisonPotion").add(Position, tile);
+		ecs.createPrefab(PoisonPotion).add(Position, tile);
 	});
 
 	times(1, () =>
 	{
 		const tile = sample(openTiles);
-		ecs.createPrefab("FrostPotion").add(Position, tile);
+		ecs.createPrefab(FrostPotion).add(Position, tile);
 	});
 
 	times(10, () =>
 	{
 		const tile = sample(openTiles);
-		ecs.createPrefab("Armor").add(Position, tile);
+		ecs.createPrefab(Armor).add(Position, tile);
 	});
 
 	times(1, () =>
 	{
 		const tile = sample(openTiles);
-		ecs.createPrefab("ScrollFireball").add(Position, tile);
+		ecs.createPrefab(ScrollFireball).add(Position, tile);
 	});
 
 	let stairsUp, stairsDown;
@@ -149,7 +157,7 @@ const createDungeonLevel = ({
 		times(1, () =>
 		{
 			const tile = sample(openTiles);
-			stairsUp = ecs.createPrefab("StairsUp");
+			stairsUp = ecs.createPrefab(StairsUp);
 			stairsUp.add(Position, tile);
 		});
 	}
@@ -159,7 +167,7 @@ const createDungeonLevel = ({
 		times(1, () =>
 		{
 			const tile = sample(openTiles);
-			stairsDown = ecs.createPrefab("StairsDown");
+			stairsDown = ecs.createPrefab(StairsDown);
 			stairsDown.add(Position, tile);
 		});
 	}
@@ -212,7 +220,7 @@ const initGame = () =>
 {
 	const { stairsDown } = createDungeonLevel({ createStairsUp: false });
 
-	player = ecs.createPrefab("Player");
+	player = ecs.createPrefab(Player);
 
 	addCache(`floors.${-1}`, {
 		stairsDown: toLocId(stairsDown.position),
@@ -227,7 +235,7 @@ const initGame = () =>
 let player = {};
 let userInput = null;
 let playerTurn = true;
-export let gameState = "GAME";
+export let gameState = GameStates.GAME;
 export let selectedInventoryIndex = 0;
 
 initGame();
@@ -257,7 +265,7 @@ const processUserInput = () =>
 		saveGame();
 	}
 
-	if (gameState === "GAME")
+	if (gameState === GameStates.GAME)
 	{
 		if (userInput === ">")
 		{
@@ -327,31 +335,31 @@ const processUserInput = () =>
 		}
 		if (userInput === "i")
 		{
-			gameState = "INVENTORY";
+			gameState = GameStates.INVENTORY;
 		}
 
 		// if (userInput === "z") {
-		//   gameState = "TARGETING";
+		//   gameState = GameStates.TARGETING;
 		// }
 
 		userInput = null;
 	}
 
-	if (gameState === "TARGETING")
+	if (gameState === GameStates.TARGETING)
 	{
 		if (userInput === "z" || userInput === "Escape")
 		{
-			gameState = "GAME";
+			gameState = GameStates.GAME;
 		}
 
 		userInput = null;
 	}
 
-	if (gameState === "INVENTORY")
+	if (gameState === GameStates.INVENTORY)
 	{
 		if (userInput === "i" || userInput === "Escape")
 		{
-			gameState = "GAME";
+			gameState = GameStates.GAME;
 		}
 
 		if (userInput === "ArrowUp")
@@ -401,7 +409,7 @@ const processUserInput = () =>
 					if (entity.requiresTarget.acquired === "MANUAL") 
 					{
 						player.add("TargetingItem", { item: entity });
-						gameState = "TARGETING";
+						gameState = GameStates.TARGETING;
 						return;
 					}
 				} else if (entity.has("Effects")) 
@@ -420,7 +428,7 @@ const processUserInput = () =>
 					selectedInventoryIndex = Math.max(0, player.inventory.list.length - 1);
 				}
 
-				gameState = "GAME";
+				gameState = GameStates.GAME;
 			}
 		}
 
@@ -451,7 +459,7 @@ const processUserInput = () =>
 					if (entity.requiresTarget.acquired === "MANUAL")
 					{
 						player.add("TargetingItem", { item: entity });
-						gameState = "TARGETING";
+						gameState = GameStates.TARGETING;
 						return;
 					}
 				} else if (entity.has("Effects"))
@@ -470,7 +478,7 @@ const processUserInput = () =>
 					selectedInventoryIndex = Math.max(0, player.inventory.list.length - 1);
 				}
 
-				gameState = "GAME";
+				gameState = GameStates.GAME;
 			}
 		}
 
@@ -484,24 +492,24 @@ const update = () =>
 
 	if (player.isDead)
 	{
-		if (gameState !== "GAMEOVER")
+		if (gameState !== GameStates.GAMEOVER)
 		{
 			addLog("You are dead.");
 			RenderSystem(player);
 		}
-		gameState = "GAMEOVER";
+		gameState = GameStates.GAMEOVER;
 		processUserInput();
 		return;
 	}
 
-	if (playerTurn && userInput && gameState === "TARGETING")
+	if (playerTurn && userInput && gameState === GameStates.TARGETING)
 	{
 		processUserInput();
 		RenderSystem(player);
 		playerTurn = true;
 	}
 
-	if (playerTurn && userInput && gameState === "INVENTORY")
+	if (playerTurn && userInput && gameState === GameStates.INVENTORY)
 	{
 		processUserInput();
 		TargetingSystem();
@@ -510,7 +518,7 @@ const update = () =>
 		playerTurn = true;
 	}
 
-	if (playerTurn && userInput && gameState === "GAME")
+	if (playerTurn && userInput && gameState === GameStates.GAME)
 	{
 		processUserInput();
 		EffectsSystem();
@@ -518,7 +526,7 @@ const update = () =>
 		FOVSystem(player);
 		RenderSystem(player);
 
-		if (gameState === "GAME")
+		if (gameState === GameStates.GAME)
 		{
 			playerTurn = false;
 		}
@@ -568,7 +576,7 @@ canvas.onclick = (e) =>
 			);
 		}
 
-		if (gameState === "TARGETING")
+		if (gameState === GameStates.TARGETING)
 		{
 			const entity = player.inventory.list[selectedInventoryIndex];
 			if (entity.requiresTarget.aoeRange)
@@ -582,7 +590,7 @@ canvas.onclick = (e) =>
 				player.add("Target", { locId });
 			}
 
-			gameState = "GAME";
+			gameState = GameStates.GAME;
 			TargetingSystem();
 			EffectsSystem();
 			RenderSystem(player);
