@@ -133,6 +133,7 @@ export class Move extends Component {
 }
 
 export class Paralyzed extends Component { }
+export class Frosted extends Component { }
 export class Poisoned extends Component { 
 	static properties = { damage: 1, onlyAppliesTo: ["IsLiveBeing"] };
 }

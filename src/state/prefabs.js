@@ -101,7 +101,7 @@ export const PoisonPotion = {
 		{
 			type: Effects,
 			properties: {
-				animate: { color: "#68A85E" },
+				animate: { color: "#68A85E", duration: 1000 },
 				addComponents: [
 					{
 						name: "Poisoned",
@@ -141,15 +141,19 @@ export const FrostPotion = {
 		{
 			type: Effects,
 			properties: {
-				animate: { color: "#64ABAA" },
+				animate: { color: "#64ABAA", duration: 1000 },
 				addComponents: [
 					{
 						name: "Paralyzed",
 						properties: {},
 					},
+					{
+						name: "Frosted",
+						properties: {},
+					},
 				],
 				duration: 5,
-			}
+			},
 		},
 		{ type: RequiresTarget, properties: { acquired: "MANUAL" } },
 	],

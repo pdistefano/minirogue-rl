@@ -14,6 +14,7 @@ ecs.registerComponent(Components.Defense);
 ecs.registerComponent(Components.Description);
 ecs.registerComponent(Components.Effects);
 ecs.registerComponent(Components.Experience);
+ecs.registerComponent(Components.Frosted);
 ecs.registerComponent(Components.Health);
 ecs.registerComponent(Components.Inventory);
 ecs.registerComponent(Components.IsBlocking);
