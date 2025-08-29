@@ -40,7 +40,7 @@ export const FOVSystem = (origin) => {
         const entity = ecs.getEntity(eId);
         entity.add(IsInFov);
 
-        if (!entity.has("IsRevealed")) {
+        if (!entity.has(IsRevealed)) {
           entity.add(IsRevealed);
         }
       });

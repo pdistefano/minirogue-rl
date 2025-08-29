@@ -4,6 +4,7 @@ import ecs from "../state/ecs";
 import { readCache, readCacheSet } from "../state/cache";
 import { toCell } from "./grid";
 import { grid } from "./canvas";
+import { Caches } from "./enums";
 
 const baseMatrix = [];
 times(grid.height, () => baseMatrix.push(new Array(grid.width).fill(0)));
@@ -15,7 +16,7 @@ export const aStar = (start, goal) => {
 
   locIds.forEach((locId) => {
     const cell = toCell(locId);
-    if (cell.z === readCache("z")) {
+    if (cell.z === readCache(Caches.Z)) {
       if (
         some([...readCacheSet("entitiesAtLocation", locId)], (eId) => {
           return ecs.getEntity(eId).isBlocking;

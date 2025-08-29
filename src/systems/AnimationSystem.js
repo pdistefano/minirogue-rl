@@ -3,6 +3,7 @@ import ecs from "../state/ecs";
 import { clearCanvas, drawCell } from "../lib/canvas";
 const { Animate, IsInFov } = require("../state/components");
 import { gameState } from "../index";
+import { GameStates } from "../lib/enums";
 
 const animatingEntities = ecs.createQuery({
   all: [Animate],
@@ -20,7 +21,7 @@ const hexToRgb = (hex) => {
 };
 
 export const AnimationSystem = () => {
-  if (gameState !== "GAME") {
+  if (gameState !== GameStates.GAME) {
     return;
   }
 

@@ -14,7 +14,7 @@ import
 	} from "./state/cache";
 import { Ai, IsInFov, Move, Position } from "./state/components";
 import ecs from "./state/ecs";
-import { Armor, FrostPotion, Goblin, HealthPotion, Player, PoisonPotion, ScrollFireball, StairsDown, StairsUp } from "./state/prefabs.js";
+import { Armor, Floor, FrostPotion, Goblin, HealthPotion, Player, PoisonPotion, ScrollFireball, StairsDown, StairsUp } from "./state/prefabs.js";
 import { AISystem } from "./systems/AISystem";
 import { AnimationSystem } from "./systems/AnimationSystem";
 import { EffectsSystem } from "./systems/EffectsSystem";
@@ -22,19 +22,13 @@ import { FOVSystem } from "./systems/FOVSystem";
 import { MovementSystem } from "./systems/MovementSystem";
 import { RenderSystem } from "./systems/RenderSystem";
 import { TargetingSystem } from "./systems/TargetingSystem";
+import { Caches, GameStates, LocalStorageKeys, TargetTypes, UserInput} from "./lib/enums";
 
 export let messageLog = ["", "Welcome to Mini Rogue RL!", ""];
 export const addLog = (text) =>
 {
 	messageLog.unshift(text);
 };
-
-const GameStates = {
-	GAME: 0,
-	INVENTORY: 1,
-	TARGETING: 2,
-	GAMEOVER: 3
-}
 
 const saveGame = () =>
 {
@@ -44,13 +38,13 @@ const saveGame = () =>
 		playerId: player.id,
 		messageLog,
 	};
-	localStorage.setItem("gameSaveData", JSON.stringify(gameSaveData));
+	localStorage.setItem(LocalStorageKeys.SAVE, JSON.stringify(gameSaveData));
 	addLog("Game saved");
 };
 
 const loadGame = () =>
 {
-	const data = JSON.parse(localStorage.getItem("gameSaveData"));
+	const data = JSON.parse(localStorage.getItem(LocalStorageKeys.SAVE));
 	if (!data)
 	{
 		addLog("Failed to load - no saved games found");
@@ -90,7 +84,7 @@ const newGame = () =>
 	gameState = GameStates.GAME;
 	selectedInventoryIndex = 0;
 
-	messageLog = ["", "Welcome to Gobs 'O Goblins!", ""];
+	messageLog = ["", "Welcome to Mini Rogue RL!", ""];
 
 	initGame();
 };
@@ -105,13 +99,13 @@ const createDungeonLevel = ({
 	const dungeon = createDungeon({
 		x: grid.map.x,
 		y: grid.map.y,
-		z: readCache("z"),
+		z: readCache(Caches.Z),
 		width: grid.map.width,
 		height: grid.map.height,
 	});
 
 	const openTiles = Object.values(dungeon.tiles).filter(
-		(x) => x.sprite === "FLOOR"
+		(x) => x.sprite === Floor.name
 	);
 
 	times(3, () =>
@@ -177,12 +171,12 @@ const createDungeonLevel = ({
 
 const goToDungeonLevel = (level) =>
 {
-	const goingUp = readCache("z") < level;
-	const floor = readCache("floors")[level];
+	const goingUp = readCache(Caches.Z) < level;
+	const floor = readCache(Caches.FLOORS)[level];
 
 	if (floor)
 	{
-		addCache("z", level);
+		addCache(Caches.Z, level);
 		player.remove(Position);
 		if (goingUp)
 		{
@@ -193,10 +187,10 @@ const goToDungeonLevel = (level) =>
 		}
 	} else
 	{
-		addCache("z", level);
+		addCache(Caches.Z, level);
 		const { stairsUp, stairsDown } = createDungeonLevel();
 
-		addCache(`floors.${level}`, {
+		addCache(`${Caches.FLOORS}.${level}`, {
 			stairsUp: toLocId(stairsUp.position),
 			stairsDown: toLocId(stairsDown.position),
 		});
@@ -222,7 +216,7 @@ const initGame = () =>
 
 	player = ecs.createPrefab(Player);
 
-	addCache(`floors.${-1}`, {
+	addCache(`${Caches.FLOORS}.${-1}`, {
 		stairsDown: toLocId(stairsDown.position),
 	});
 
@@ -250,70 +244,70 @@ document.addEventListener("keydown", (ev) =>
 
 const processUserInput = () =>
 {
-	if (userInput === "l")
+	if (userInput === UserInput.KeyL)
 	{
 		loadGame();
 	}
 
-	if (userInput === "n")
+	if (userInput === UserInput.KeyN)
 	{
 		newGame();
 	}
 
-	if (userInput === "s")
+	if (userInput === UserInput.KeyS)
 	{
 		saveGame();
 	}
 
 	if (gameState === GameStates.GAME)
 	{
-		if (userInput === ">")
+		if (userInput === UserInput.KeyGT)
 		{
 			if (
 				toLocId(player.position) ==
-				readCache(`floors.${readCache("z")}.stairsDown`)
+				readCache(`${Caches.FLOORS}.${readCache(Caches.Z)}.stairsDown`)
 			)
 			{
 				addLog("You descend deeper into the dungeon");
-				goToDungeonLevel(readCache("z") - 1);
+				goToDungeonLevel(readCache(Caches.Z) - 1);
 			} else
 			{
 				addLog("There are no stairs to descend");
 			}
 		}
 
-		if (userInput === "<")
+		if (userInput === UserInput.KeyLT)
 		{
 			if (
 				toLocId(player.position) ==
-				readCache(`floors.${readCache("z")}.stairsUp`)
+				readCache(`${Caches.FLOORS}.${readCache(Caches.Z)}.stairsUp`)
 			)
 			{
 				addLog("You climb from the depths of the dungeon");
-				goToDungeonLevel(readCache("z") + 1);
+				goToDungeonLevel(readCache(Caches.Z) + 1);
 			} else
 			{
 				addLog("There are no stairs to climb");
 			}
 		}
 
-		if (userInput === "ArrowUp")
+		if (userInput === UserInput.ArrowUp)
 		{
-			player.add(Move, { x: 0, y: -1, z: readCache("z") });
+			player.add(Move, { x: 0, y: -1, z: readCache(Caches.Z) });
 		}
-		if (userInput === "ArrowRight")
+		if (userInput === UserInput.ArrowRight)
 		{
-			player.add(Move, { x: 1, y: 0, z: readCache("z") });
+			player.add(Move, { x: 1, y: 0, z: readCache(Caches.Z) });
 		}
-		if (userInput === "ArrowDown")
+		if (userInput === UserInput.ArrowDown)
 		{
-			player.add(Move, { x: 0, y: 1, z: readCache("z") });
+			player.add(Move, { x: 0, y: 1, z: readCache(Caches.Z) });
 		}
-		if (userInput === "ArrowLeft")
+		if (userInput === UserInput.ArrowLeft)
 		{
-			player.add(Move, { x: -1, y: 0, z: readCache("z") });
+			player.add(Move, { x: -1, y: 0, z: readCache(Caches.Z) });
 		}
-		if (userInput === "t")
+		if (userInput === UserInput.KeyT)
 		{
 			let pickupFound = false;
 			readCacheSet("entitiesAtLocation", toLocId(player.position)).forEach(
@@ -333,12 +327,12 @@ const processUserInput = () =>
 				addLog("There is nothing to pick up here");
 			}
 		}
-		if (userInput === "i")
+		if (userInput === UserInput.KeyI)
 		{
 			gameState = GameStates.INVENTORY;
 		}
 
-		// if (userInput === "z") {
+		// if (userInput === UserInput.KeyZ) {
 		//   gameState = GameStates.TARGETING;
 		// }
 
@@ -347,7 +341,7 @@ const processUserInput = () =>
 
 	if (gameState === GameStates.TARGETING)
 	{
-		if (userInput === "z" || userInput === "Escape")
+		if (userInput === UserInput.KeyZ || userInput === UserInput.Escape)
 		{
 			gameState = GameStates.GAME;
 		}
@@ -357,25 +351,25 @@ const processUserInput = () =>
 
 	if (gameState === GameStates.INVENTORY)
 	{
-		if (userInput === "i" || userInput === "Escape")
+		if (userInput === UserInput.KeyI || userInput === UserInput.Escape)
 		{
 			gameState = GameStates.GAME;
 		}
 
-		if (userInput === "ArrowUp")
+		if (userInput === UserInput.ArrowUp)
 		{
 			selectedInventoryIndex -= 1;
 			if (selectedInventoryIndex < 0) selectedInventoryIndex = 0;
 		}
 
-		if (userInput === "ArrowDown")
+		if (userInput === UserInput.ArrowDown)
 		{
 			selectedInventoryIndex += 1;
 			if (selectedInventoryIndex > player.inventory.list.length - 1)
 				selectedInventoryIndex = player.inventory.list.length - 1;
 		}
 
-		if (userInput === "d")
+		if (userInput === UserInput.KeyD)
 		{
 			if (player.inventory.list.length)
 			{
@@ -391,7 +385,7 @@ const processUserInput = () =>
 			{
 				if (entity.requiresTarget) 
 				{
-					if (entity.requiresTarget.acquired === "RANDOM") 
+					if (entity.requiresTarget.acquired === TargetTypes.RANDOM) 
 					{
 						// get a target that is NOT the player
 						const target = sample([...enemiesInFOV.get()]);
@@ -406,7 +400,7 @@ const processUserInput = () =>
 						}
 					}
 
-					if (entity.requiresTarget.acquired === "MANUAL") 
+					if (entity.requiresTarget.acquired === TargetTypes.MANUAL) 
 					{
 						player.add("TargetingItem", { item: entity });
 						gameState = GameStates.TARGETING;
@@ -440,7 +434,7 @@ const processUserInput = () =>
 			{
 				if (entity.requiresTarget)
 				{
-					if (entity.requiresTarget.acquired === "RANDOM")
+					if (entity.requiresTarget.acquired === TargetTypes.RANDOM)
 					{
 						// get a target that is NOT the player
 						const target = sample([...enemiesInFOV.get()]);
@@ -456,7 +450,7 @@ const processUserInput = () =>
 						}
 					}
 
-					if (entity.requiresTarget.acquired === "MANUAL")
+					if (entity.requiresTarget.acquired === TargetTypes.MANUAL)
 					{
 						player.add("TargetingItem", { item: entity });
 						gameState = GameStates.TARGETING;
@@ -557,7 +551,7 @@ const canvas = document.querySelector("#canvas");
 canvas.onclick = (e) =>
 {
 	const [x, y] = pxToCell(e);
-	const locId = toLocId({ x, y, z: readCache("z") });
+	const locId = toLocId({ x, y, z: readCache(Caches.Z) });
 
 	readCacheSet("entitiesAtLocation", locId).forEach((eId) =>
 	{
@@ -582,7 +576,7 @@ canvas.onclick = (e) =>
 			if (entity.requiresTarget.aoeRange)
 			{
 				const targets = circle({ x, y }, entity.requiresTarget.aoeRange).map(
-					(locId) => `${locId},${readCache("z")}`
+					(locId) => `${locId},${readCache(Caches.Z)}`
 				);
 				targets.forEach((locId) => player.add("Target", { locId }));
 			} else

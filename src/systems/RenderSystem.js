@@ -20,6 +20,7 @@ import {
 import { toLocId } from "../lib/grid";
 import { readCache, readCacheSet } from "../state/cache";
 import { gameState, messageLog, selectedInventoryIndex } from "../index";
+import { GameStates } from "../lib/enums";
 
 const layer100Entities = ecs.createQuery({
   all: [Position, Appearance, Layer100],
@@ -219,7 +220,7 @@ const renderInfoBar = (mPos) => {
       drawCell({
         appearance: {
           char: "",
-          background: "rgba(255, 255, 255, 0.5)",
+          background: "rgba(255, 0, 0, 0.5)",
         },
         position: { x, y, z },
       });
@@ -349,20 +350,20 @@ export const RenderSystem = (player) => {
   renderMessageLog();
   renderMenu();
 
-  if (gameState === "INVENTORY") {
+  if (gameState === GameStates.INVENTORY) {
     renderInventory(player);
   }
 };
 
 const canvas = document.querySelector("#canvas");
 canvas.onmousemove = throttle((e) => {
-  if (gameState === "GAME") {
+  if (gameState === GameStates.GAME) {
     const [x, y] = pxToCell(e);
     renderMap();
     renderInfoBar({ x, y, z: readCache("z") });
   }
 
-  if (gameState === "TARGETING") {
+  if (gameState === GameStates.TARGETING) {
     const [x, y] = pxToCell(e);
     renderMap();
     renderInfoBar({ x, y, z: readCache("z") });

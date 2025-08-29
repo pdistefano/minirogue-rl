@@ -3,6 +3,7 @@ import ecs from "../state/ecs";
 import { rectangle, rectsIntersect } from "./grid";
 import { Position } from "../state/components";
 import { grid } from "./canvas";
+import { Floor, Wall } from "../state/prefabs";
 
 function digHorizontalPassage(x1, x2, y, z) {
   const tiles = {};
@@ -11,7 +12,7 @@ function digHorizontalPassage(x1, x2, y, z) {
   let x = start;
 
   while (x < end) {
-    tiles[`${x},${y},${z}`] = { x, y, z, sprite: "FLOOR" };
+    tiles[`${x},${y},${z}`] = { x, y, z, sprite: Floor.name };
     x++;
   }
 
@@ -25,7 +26,7 @@ function digVerticalPassage(y1, y2, x, z) {
   let y = start;
 
   while (y < end) {
-    tiles[`${x},${y},${z}`] = { x, y, z, sprite: "FLOOR" };
+    tiles[`${x},${y},${z}`] = { x, y, z, sprite: Floor.name };
     y++;
   }
 
@@ -46,7 +47,7 @@ export const createDungeon = ({
   const dungeon = rectangle(
     { x, y, z, width, height },
     {
-      sprite: "WALL",
+      sprite: Wall.name,
     }
   );
 
@@ -62,7 +63,7 @@ export const createDungeon = ({
     // create a candidate room
     const candidate = rectangle(
       { x: rx, y: ry, z, width: rw, height: rh, hasWalls: true },
-      { sprite: "FLOOR" }
+      { sprite: Floor.name }
     );
 
     // test if candidate is overlapping with any existing rooms
@@ -97,12 +98,12 @@ export const createDungeon = ({
   Object.keys(dungeon.tiles).forEach((key) => {
     const tile = dungeon.tiles[key];
 
-    if (tile.sprite === "WALL") {
-      ecs.createPrefab("Wall").add(Position, { ...dungeon.tiles[key], z });
+    if (tile.sprite === Wall.name) {
+      ecs.createPrefab(Wall.name).add(Position, { ...dungeon.tiles[key], z });
     }
 
-    if (tile.sprite === "FLOOR") {
-      ecs.createPrefab("Floor").add(Position, { ...dungeon.tiles[key], z });
+    if (tile.sprite === Floor.name) {
+      ecs.createPrefab(Floor.name).add(Position, { ...dungeon.tiles[key], z });
     }
   });
 
