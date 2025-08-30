@@ -61,7 +61,7 @@ export const HealthPotion = {
 	components: [
 		{
 			type: Appearance,
-			properties: { char: "♥", color: "#C84D4A" },
+			properties: { char: "H", isIcon: true, color: "#C84D4A" },
 		},
 		{
 			type: Consumable,
