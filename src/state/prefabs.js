@@ -242,6 +242,18 @@ export const Armor = {
 			type: Description,
 			properties: { name: "piece of armor" },
 		},
+		{
+			type: Consumable,
+			properties: { isWearable: true },
+		},
+		{
+			type: Effects,
+			properties: {
+				component: "defense",
+				delta: 1,
+				animate: { color: "gray", isIcon:true, char: "a" },
+			},
+		},
 	],
 };
 

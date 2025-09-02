@@ -296,7 +296,7 @@ const renderInventory = (player) => {
   });
 
   drawText({
-    text: "(C)onsume (D)rop (R)ead",
+    text: "(C)onsume (D)rop (R)ead (W)ear",
     background: "black",
     color: "#aaa",
     x: grid.inventory.x,
