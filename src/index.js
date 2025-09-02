@@ -426,6 +426,28 @@ const processUserInput = () =>
 			}
 		}
 
+		if (userInput === "w")
+		{
+			const entity = player.inventory.list[selectedInventoryIndex];
+			if (entity && entity.has("Consumable") && entity.get("Consumable").isWearable)
+			{
+				if (entity.has("Effects"))
+				{
+					entity.get("Effects").forEach((x) => player.add("ActiveEffects", { ...x.serialize() }));
+					addLog("You feel protected.");
+					entity.destroy();
+				}
+
+				if (selectedInventoryIndex > player.inventory.list.length - 1)
+				{
+					selectedInventoryIndex = Math.max(0, player.inventory.list.length - 1);
+				}
+
+				gameState = GameStates.GAME;
+			}
+
+		}
+
 		if (userInput === "c")
 		{
 			const entity = player.inventory.list[selectedInventoryIndex];
