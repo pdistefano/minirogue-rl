@@ -68,9 +68,13 @@ export const EffectsSystem = () =>
 
 						if (component.properties.onlyAppliesTo)
 						{
-							if (entity.has(component.properties.onlyAppliesTo[0]))
+							for (let i = 0; i < component.properties.onlyAppliesTo.length; i++)
 							{
-								entity.add(component.name, component.properties);
+								if (entity.has(component.properties.onlyAppliesTo[i]))
+								{
+									entity.add(component.name, component.properties);
+									break;
+								}
 							}
 						}
 						else
