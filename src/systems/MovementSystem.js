@@ -9,18 +9,14 @@ const movableEntities = ecs.createQuery({
 });
 
 const attack = (entity, target) => {
-	const damage = entity.power.current - target.defense.current;
+	const damage = Math.max(entity.power.current - target.defense.current, 0);
 	target.fireEvent("take-damage", { amount: damage });
 
 	if (target.health.current <= 0) {
-		return addLog(
-			`${entity.description.name} kicked a ${target.description.name} for ${damage} damage and killed it!`
-		);
+		return addLog(`${entity.description.name} kicked ${target.description.name} for ${damage} damage and killed it!`);
 	}
 
-	addLog(
-		`${entity.description.name} kicked a ${target.description.name} for ${damage} damage!`
-	);
+	addLog(`${entity.description.name} kicked ${target.description.name} for ${damage} damage!`);
 };
 
 export const MovementSystem = () => {
@@ -65,15 +61,15 @@ export const MovementSystem = () => {
 			// 	entity.add("Poisoned");
 			// }
 		}
+
 		if (blockers.length) {
 			blockers.forEach((eId) => {
 				const target = ecs.getEntity(eId);
-				if (target.has("Health") && target.has("Defense")) {
+				if (target.has("Health") && target.has("Defense")) 
+				{
 					attack(entity, target);
 				} else {
-					addLog(
-						`${entity.description.name} bump into a ${target.description.name}`
-					);
+					addLog(`${entity.description.name} bump into a ${target.description.name}`);
 				}
 			});
 
