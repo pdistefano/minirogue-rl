@@ -12,6 +12,7 @@ ecs.registerComponent(Components.Appearance);
 ecs.registerComponent(Components.Consumable);
 ecs.registerComponent(Components.Defense);
 ecs.registerComponent(Components.Description);
+ecs.registerComponent(Components.EffectsAsset);
 ecs.registerComponent(Components.Effects);
 ecs.registerComponent(Components.Experience);
 ecs.registerComponent(Components.Frosted);
