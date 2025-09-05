@@ -21,7 +21,7 @@ const attack = (entity, target) => {
 
 export const MovementSystem = () => {
 	movableEntities.get().forEach((entity) => {
-		if (entity.has("Paralyzed")) {
+		if (entity.has("Paralyzed" ) || entity.has("Frosted")) {
 			return entity.remove(Move);
 		}
 
