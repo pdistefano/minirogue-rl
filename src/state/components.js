@@ -69,6 +69,10 @@ export class Description extends Component {
 	static properties = { name: "No Name" };
 }
 
+export class EffectsAsset extends Component {
+	static properties = { components: [] };
+}
+
 export class Effects extends Component {
 	static allowMultiple = true;
 	static properties = effectProps;
@@ -133,10 +137,18 @@ export class Move extends Component {
 	static properties = { x: 0, y: 0, z: 0, relative: true };
 }
 
-export class Paralyzed extends Component { }
-export class Frosted extends Component { }
+export class Paralyzed extends Component { 
+	static properties = { duration: 3 };
+}
+export class Frosted extends Component { 
+	static properties = { duration: 3 };
+}
 export class Poisoned extends Component { 
-	static properties = { damage: 1, onlyAppliesTo: ["IsLiveBeing"] };
+	static properties = { 
+		onlyAppliesTo: ["IsLiveBeing"],
+		damage: 1, 
+		duration: 15
+	};
 }
 
 export class Position extends Component {

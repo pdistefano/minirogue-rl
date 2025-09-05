@@ -5,6 +5,7 @@ import
 		Consumable,
 		Defense,
 		Description,
+		EffectsAsset,
 		Effects,
 		Experience,
 		Health,
@@ -17,7 +18,8 @@ import
 		Layer300,
 		Layer400,
 		Power,
-		RequiresTarget
+		RequiresTarget,
+		Poisoned
 	} from "./components";
 
 // Base
@@ -79,6 +81,18 @@ export const HealthPotion = {
 				animate: { color: "#C84D4A", char: "♥" },
 			},
 		},
+		{
+			type: EffectsAsset,
+			properties: { 
+				components: [
+					{
+						type: Health,
+						delta: 5,
+						animate: { color: "#C84D4A", char: "♥" },
+					}
+				]
+			},
+		},
 	],
 };
 
@@ -99,18 +113,13 @@ export const PoisonPotion = {
 			properties: { name: "poison potion" },
 		},
 		{
-			type: Effects,
-			properties: {
-				animate: { color: "#68A85E", duration: 1000 },
-				addComponents: [
+			type: EffectsAsset,
+			properties: { 
+				components: [
 					{
-						name: "Poisoned",
-						properties: {
-							damage: 3,
-						},
-					},
-				],
-				duration: 99,
+						type: Poisoned,
+					}
+				]
 			},
 		},
 		{
@@ -139,20 +148,9 @@ export const FrostPotion = {
 			properties: { name: "frost potion" },
 		},
 		{
-			type: Effects,
-			properties: {
-				animate: { color: "#64ABAA", duration: 1000 },
-				addComponents: [
-					{
-						name: "Paralyzed",
-						properties: {},
-					},
-					{
-						name: "Frosted",
-						properties: {},
-					},
-				],
-				duration: 5,
+			type: EffectsAsset,
+			properties: { 
+				components: ["Frosted" ]
 			},
 		},
 		{ type: RequiresTarget, properties: { acquired: "MANUAL" } },
