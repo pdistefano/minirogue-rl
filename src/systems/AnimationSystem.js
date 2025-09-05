@@ -6,56 +6,63 @@ import { gameState } from "../index";
 import { GameStates } from "../lib/enums";
 
 const animatingEntities = ecs.createQuery({
-  all: [Animate],
+	all: [Animate],
 });
 
-const hexToRgb = (hex) => {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
-    : {};
+const hexToRgb = (hex) =>
+{
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result
+		? {
+			r: parseInt(result[1], 16),
+			g: parseInt(result[2], 16),
+			b: parseInt(result[3], 16),
+		}
+		: {};
 };
 
-export const AnimationSystem = () => {
-  if (gameState !== GameStates.GAME) {
-    return;
-  }
+export const AnimationSystem = () =>
+{
+	if (gameState !== GameStates.GAME)
+	{
+		return;
+	}
 
-  animatingEntities.get().forEach((entity) => {
-    const animate = last(entity.animate);
+	animatingEntities.get().forEach((entity) =>
+	{
+		const animate = last(entity.animate);
+		console.warn(animate.char);
 
-    const { r = 255, g = 255, b = 255 } = hexToRgb(animate.color);
+		const { r = 255, g = 255, b = 255 } = hexToRgb(animate.color);
 
-    const time = new Date();
-    // set animation startTime
-    if (!animate.startTime) {
-      entity.fireEvent("set-start-time", { time });
-    }
-    const frameTime = time - animate.startTime;
-    // end animation when complete
-    if (frameTime > animate.duration) {
-      return entity.remove("Animate");
-    }
-    const framePercent = frameTime / animate.duration;
-    // do the animation
-    // clear the cell first
-    clearCanvas(entity.position.x, entity.position.y, 1, 1);
+		const time = new Date();
+		// set animation startTime
+		if (!animate.startTime)
+		{
+			entity.fireEvent("set-start-time", { time });
+		}
+		const frameTime = time - animate.startTime;
+		// end animation when complete
+		if (frameTime > animate.duration)
+		{
+			return entity.remove("Animate");
+		}
+		const framePercent = frameTime / animate.duration;
+		// do the animation
+		// clear the cell first
+		clearCanvas(entity.position.x, entity.position.y, 1, 1);
 
-    // redraw the existing entity
-    drawCell(entity);
+		// redraw the existing entity
+		drawCell(entity);
 
-    // draw the animation over top
-    drawCell({
-      appearance: {
-        char: animate.char || entity.appearance.char,
-        color: `rgba(${r}, ${g}, ${b}, ${1 - framePercent})`,
-        background: "transparent",
-      },
-      position: entity.position,
-    });
-  });
+		// draw the animation over top
+		drawCell({
+			appearance: {
+				char: animate.char || entity.appearance.char,
+				color: `rgba(${r}, ${g}, ${b}, ${1 - framePercent})`,
+				background: "transparent",
+			},
+			position: entity.position,
+		});
+	});
 };
