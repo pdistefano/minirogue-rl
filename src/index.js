@@ -406,12 +406,12 @@ const processUserInput = () =>
 						gameState = GameStates.TARGETING;
 						return;
 					}
-				} else if (entity.has("Effects")) 
+				} else if (entity.has("EffectsAsset")) 
 				{
 					// clone all effects and add to self
 					entity
-						.get("Effects")
-						.forEach((x) => player.add("ActiveEffects", { ...x.serialize() }));
+						.get("EffectsAsset")
+						.forEach((x) => player.add(x, { ...x.serialize() }));
 
 					addLog(`The effects are felt immediately`);
 					entity.destroy();
@@ -478,12 +478,15 @@ const processUserInput = () =>
 						gameState = GameStates.TARGETING;
 						return;
 					}
-				} else if (entity.has("Effects"))
+				} else if (entity.has("EffectsAsset"))
 				{
 					// clone all effects and add to self
-					entity
-						.get("Effects")
-						.forEach((x) => player.add("ActiveEffects", { ...x.serialize() }));
+					
+					entity.get("EffectsAsset").forEach((x) =>
+						{
+							console.warn(x);
+							player.add(x.type, { ...x.serialize() });
+						})
 
 					addLog(`You drank a ${entity.description.name}`);
 					entity.destroy();
